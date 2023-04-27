@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -62,10 +63,33 @@ public class Player extends ApplicationAdapter {
             if (!projectile.getVisible())
             {
                 shootSound.play();
+                System.out.println(projectile.getNumber());
                 projectile.setVisible(true);
                 projectile.shoot(shipRectangle.x, shipRectangle.y);
             }
 
+    }
+
+    public void changeNumber(){
+        boolean qPressed = false;
+        boolean ePressed = false;
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+            qPressed = true;
+            ePressed = false;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            ePressed = true;
+            qPressed = false;
+        }
+
+        if(qPressed) {
+            System.out.println("Q");
+            projectile.substractNumber(1);
+        }
+        if(ePressed) {
+            projectile.addNumber(1);
+        }
     }
 
     public void move() {
@@ -108,6 +132,7 @@ public class Player extends ApplicationAdapter {
 
         move();
         shot();
+        changeNumber();
 
         //projectile.shoot(shipRectangle.x, shipRectangle.y);
     }

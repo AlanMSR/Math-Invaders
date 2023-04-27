@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class PlayerProjectile {
 
-    private int number;
+    private int number=0;
 
     private boolean isFired;
 
@@ -36,14 +36,25 @@ public class PlayerProjectile {
     }
 
     public int getNumber() {
-
         return this.number;
     }
 
-    public int changeNumber() {
-        return this.number;
+    public void substractNumber(int n) {
+        number = number-n;
+        if(number < 0 ){
+            number = 0;
+        }
     }
 
+    public void addNumber(int n) {
+        number = number+n;
+        if(number > 9 ){
+            number = 9;
+        }
+    }
+
+
+    
     public void draw(SpriteBatch batch) {
 
         if (isFired) {
