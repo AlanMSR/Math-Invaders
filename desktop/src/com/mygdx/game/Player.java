@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class Player extends ApplicationAdapter {
 
+    private Sound shootSound;
     private Texture shipTexture;
     private Rectangle shipRectangle;
     private SpriteBatch batch;
@@ -30,6 +32,8 @@ public class Player extends ApplicationAdapter {
         shipRectangle.y = 20;
         shipRectangle.width = 64;
         shipRectangle.height = 64;
+
+        shootSound = Gdx.audio.newSound(Gdx.files.internal("shoot.wav"));
 
         batch = new SpriteBatch();
 
@@ -57,6 +61,7 @@ public class Player extends ApplicationAdapter {
         if(Gdx.input.isKeyPressed(Input.Keys.A))
             if (!projectile.getVisible())
             {
+                shootSound.play();
                 projectile.setVisible(true);
                 projectile.shoot(shipRectangle.x, shipRectangle.y);
             }
@@ -64,13 +69,31 @@ public class Player extends ApplicationAdapter {
     }
 
     public void move() {
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) shipRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) shipRectangle.x += 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) shipRectangle.y += 200 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) shipRectangle.y -= 200 * Gdx.graphics.getDeltaTime();
-
-        if(shipRectangle.x < 0)shipRectangle.x = 0;
-        if(shipRectangle.x > 800 - 64) shipRectangle.x = 800 - 64;
+        float speed = 200 * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            shipRectangle.x -= speed;
+            if (shipRectangle.x < 0) {
+                shipRectangle.x = 0;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            shipRectangle.x += speed;
+            if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width) {
+                shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            shipRectangle.y += speed;
+            if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height) {
+                shipRectangle.y = Gdx.graphics.getHeight() - shipRectangle.height;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            shipRectangle.y -= speed;
+            if (shipRectangle.y < 0) {
+                shipRectangle.y = 0;
+            }
+        }
     }
 
     @Override

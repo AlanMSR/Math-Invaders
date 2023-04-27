@@ -9,25 +9,29 @@ import com.badlogic.gdx.utils.Array;
 public class PlayerProjectile {
 
     private int number;
+
+    private boolean isFired;
+
+    private Rectangle projectile;
+
     private boolean visibility;
     private Texture projectileTexture;
-    private Array<PlayerProjectile> projectile;
 
     private Rectangle projectileRectangle;
 
     public PlayerProjectile() {
 
-        //projectile = new Array<PlayerProjectile>;
 
         loadTexture();
 
-        visibility = false;
+        //visibility = false;
 
-        projectileRectangle = new Rectangle();
-        projectileRectangle.x = 0;
-        projectileRectangle.y = 1000000;
-        projectileRectangle.width = 32;
-        projectileRectangle.height = 32;
+        projectile = new Rectangle();
+        //projectileRectangle.x = 0;
+        //projectileRectangle.y = 1000000;
+        //projectileRectangle.width = 32;
+        //projectileRectangle.height = 32;
+        isFired = false;
 
     }
 
@@ -42,10 +46,16 @@ public class PlayerProjectile {
 
     public void draw(SpriteBatch batch) {
 
-        projectileRectangle.y += 820 * Gdx.graphics.getDeltaTime();
-        batch.draw(projectileTexture, projectileRectangle.x, projectileRectangle.y);
-
+        if (isFired) {
+            projectile.y += 820 * Gdx.graphics.getDeltaTime();
+            batch.draw(projectileTexture, projectile.x, projectile.y);
+            if (projectile.y > Gdx.graphics.getHeight()) {
+                isFired = false;
+                visibility = false;
+            }
+        }
     }
+
 
     public void setVisible(boolean value) {
 
@@ -59,13 +69,9 @@ public class PlayerProjectile {
 
     public void shoot(float shipX, float shipY) {
 
-        if (visibility) {
-
-            projectileRectangle.x = shipX + 8;
-            projectileRectangle.y = shipY;
-            System.out.println(projectileRectangle.y);
-
-            visibility = false;
+        if (!isFired) {
+            projectile.set(shipX + 8, shipY, 32, 32);
+            isFired = true;
         }
     }
 
@@ -92,4 +98,13 @@ public class PlayerProjectile {
     public void projectileMovement() {
 
     }
+
+    public boolean isFired() {
+        return isFired;
+    }
+
+    public Rectangle getProjectile() {
+        return projectile;
+    }
+
 }
