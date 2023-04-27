@@ -13,6 +13,7 @@ public class Player extends ApplicationAdapter {
     private Texture shipTexture;
     private Rectangle shipRectangle;
     private SpriteBatch batch;
+    private PlayerProjectile projectile;
 
     @Override
     public void create() {
@@ -21,6 +22,8 @@ public class Player extends ApplicationAdapter {
             System.out.println("Failed to load texture.");
             Gdx.app.exit();
         }
+
+        projectile = new PlayerProjectile();
 
         shipRectangle = new Rectangle();
         shipRectangle.x = 800 / 2 - 64 / 2;
@@ -49,6 +52,17 @@ public class Player extends ApplicationAdapter {
         return result;
     }
 
+    public void shot() {
+
+        if(Gdx.input.isKeyPressed(Input.Keys.A))
+            if (!projectile.getVisible())
+            {
+                projectile.setVisible(true);
+                projectile.shoot(shipRectangle.x, shipRectangle.y);
+            }
+
+    }
+
     public void move() {
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) shipRectangle.x -= 200 * Gdx.graphics.getDeltaTime();
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) shipRectangle.x += 200 * Gdx.graphics.getDeltaTime();
@@ -66,8 +80,14 @@ public class Player extends ApplicationAdapter {
 
         batch.begin();
         batch.draw(shipTexture, shipRectangle.x, shipRectangle.y);
+        projectile.draw(batch);
         batch.end();
 
         move();
+        shot();
+
+        //projectile.shoot(shipRectangle.x, shipRectangle.y);
     }
+
+
 }
