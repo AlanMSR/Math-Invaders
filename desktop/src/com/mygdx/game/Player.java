@@ -71,6 +71,7 @@ public class Player extends ApplicationAdapter {
     }
 
     public void changeNumber(){
+
         boolean qPressed = false;
         boolean ePressed = false;
 
@@ -84,11 +85,10 @@ public class Player extends ApplicationAdapter {
         }
 
         if(qPressed) {
-            System.out.println("Q");
-            projectile.substractNumber(1);
+            projectile.substractNumber();
         }
         if(ePressed) {
-            projectile.addNumber(1);
+            projectile.addNumber();
         }
     }
 
