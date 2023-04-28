@@ -76,7 +76,7 @@ public class PlayerProjectile {
 
         if (isFired) {
 
-            projectile.y += 820 * Gdx.graphics.getDeltaTime();
+            projectile.y += 850 * Gdx.graphics.getDeltaTime();
             batch.draw(bulletOfSets[number - 1], projectile.x, projectile.y);
 
             if (projectile.y > Gdx.graphics.getHeight()) {
