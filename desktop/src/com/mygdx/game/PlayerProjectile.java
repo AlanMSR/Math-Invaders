@@ -3,32 +3,50 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 public class PlayerProjectile {
 
-    private int number;
+    private int number = 1;
+
+    private boolean isFired;
+
+    private Rectangle projectile;
+
     private boolean visibility;
     private Texture projectileTexture;
-    private Array<PlayerProjectile> projectile;
-
+    private Texture numbersTexture;
     private Rectangle projectileRectangle;
+
+    private TextureRegion[] bulletOfSets;
 
     public PlayerProjectile() {
 
-        //projectile = new Array<PlayerProjectile>;
-
         loadTexture();
 
-        visibility = false;
+        //visibility = false;
 
-        projectileRectangle = new Rectangle();
-        projectileRectangle.x = 0;
-        projectileRectangle.y = 1000000;
-        projectileRectangle.width = 32;
-        projectileRectangle.height = 32;
+        projectile = new Rectangle();
+        //projectileRectangle.x = 0;
+        //projectileRectangle.y = 1000000;
+        //projectileRectangle.width = 32;
+        //projectileRectangle.height = 32;
+        isFired = false;
 
+        numbersTexture = new Texture(Gdx.files.internal("numbers&shi.png"));
+
+        bulletOfSets = new TextureRegion[9];
+        bulletOfSets[0] = new TextureRegion(numbersTexture, 178, 258, 12, 30);
+        bulletOfSets[1] = new TextureRegion(numbersTexture, 215, 258, 12, 30);
+        bulletOfSets[2] = new TextureRegion(numbersTexture, 248, 258, 12, 30);
+        bulletOfSets[3] = new TextureRegion(numbersTexture, 9, 299, 12, 30);
+        bulletOfSets[4] = new TextureRegion(numbersTexture, 43, 299, 12, 30);
+        bulletOfSets[5] = new TextureRegion(numbersTexture, 77, 299, 12, 30);
+        bulletOfSets[6] = new TextureRegion(numbersTexture, 111, 299, 12, 30);
+        bulletOfSets[7] = new TextureRegion(numbersTexture, 146, 299, 12, 30);
+        bulletOfSets[8] = new TextureRegion(numbersTexture, 180, 299, 12, 30);
     }
 
     public int getNumber() {
@@ -36,16 +54,39 @@ public class PlayerProjectile {
         return this.number;
     }
 
-    public int changeNumber() {
-        return this.number;
+    public void substractNumber() {
+
+        number = number - 1;
+
+        if(number < 1 ){
+            number = 1;
+        }
     }
 
+    public void addNumber() {
+
+        number = number + 1;
+
+        if(number > 9 ){
+            number = 9;
+        }
+    }
+    
     public void draw(SpriteBatch batch) {
 
-        projectileRectangle.y += 820 * Gdx.graphics.getDeltaTime();
-        batch.draw(projectileTexture, projectileRectangle.x, projectileRectangle.y);
+        if (isFired) {
 
+            projectile.y += 850 * Gdx.graphics.getDeltaTime();
+            batch.draw(bulletOfSets[number - 1], projectile.x, projectile.y);
+
+            if (projectile.y > Gdx.graphics.getHeight()) {
+
+                isFired = false;
+                visibility = false;
+            }
+        }
     }
+
 
     public void setVisible(boolean value) {
 
@@ -59,13 +100,9 @@ public class PlayerProjectile {
 
     public void shoot(float shipX, float shipY) {
 
-        if (visibility) {
-
-            projectileRectangle.x = shipX + 8;
-            projectileRectangle.y = shipY;
-            System.out.println(projectileRectangle.y);
-
-            visibility = false;
+        if (!isFired) {
+            projectile.set(shipX + 8, shipY, 32, 32);
+            isFired = true;
         }
     }
 
@@ -92,4 +129,13 @@ public class PlayerProjectile {
     public void projectileMovement() {
 
     }
+
+    public boolean isFired() {
+        return isFired;
+    }
+
+    public Rectangle getProjectile() {
+        return projectile;
+    }
+
 }
