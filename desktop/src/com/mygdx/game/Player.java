@@ -123,7 +123,7 @@ public class Player extends ApplicationAdapter {
     @Override
     public void render()
     {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
+        ScreenUtils.clear(1, 1, 1, 1);
 
         batch.begin();
         batch.draw(shipTexture, shipRectangle.x, shipRectangle.y);

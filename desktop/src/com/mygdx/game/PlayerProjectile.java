@@ -55,20 +55,21 @@ public class PlayerProjectile {
     }
 
     public void substractNumber() {
-
-        number = number - 1;
-
-        if(number < 1 ){
+        if(!visibility){
+            number = number - 1;
+            if(number < 1 ){
             number = 1;
+            }
         }
     }
 
     public void addNumber() {
+        if(!visibility){
+            number = number + 1;
 
-        number = number + 1;
-
-        if(number > 9 ){
-            number = 9;
+            if(number > 9 ){
+                number = 9;
+            }
         }
     }
     
@@ -76,7 +77,7 @@ public class PlayerProjectile {
 
         if (isFired) {
 
-            projectile.y += 850 * Gdx.graphics.getDeltaTime();
+            projectile.y += 250 * Gdx.graphics.getDeltaTime();
             batch.draw(bulletOfSets[number - 1], projectile.x, projectile.y);
 
             if (projectile.y > Gdx.graphics.getHeight()) {
