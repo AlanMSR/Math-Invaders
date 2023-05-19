@@ -7,12 +7,13 @@ import com.badlogic.gdx.controllers.Controllers;
 
 public class Runner extends ApplicationAdapter {
     private SpriteBatch batch;
-    private Player player1;
+    private Player player1, player2;
 
     @Override
     public void create() {
-        player1 = new Player();
         batch = new SpriteBatch();
+        player1 = new Player(1);
+        player2 = new Player(2);
 
         Controllers.clearListeners();
         Controllers.addListener(new PlayerControllerListener(1));
@@ -26,6 +27,7 @@ public class Runner extends ApplicationAdapter {
         ScreenUtils.clear(1, 1, 1, 1);
         batch.begin();
         player1.draw(batch);
+        player2.draw(batch);
         batch.end();
     }
 }
