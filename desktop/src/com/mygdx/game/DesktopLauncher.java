@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.mygdx.game.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Files;
 
@@ -15,6 +14,6 @@ public class DesktopLauncher {
 		config.setWindowedMode(800, 480);
 		config.setWindowSizeLimits(800, 480, 800, 480);
 		Gdx.files = new Lwjgl3Files();
-		new Lwjgl3Application(new Player(), config);
+		new Lwjgl3Application(new Runner(), config);
 	}
 }

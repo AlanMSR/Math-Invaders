@@ -1,4 +1,4 @@
 package com.mygdx.game;
 
-public class Enemy {
+public class Enemy extends Entity{
 }

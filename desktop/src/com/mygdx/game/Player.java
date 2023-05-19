@@ -1,26 +1,24 @@
 package com.mygdx.game;
 
-
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 
-public class Player extends ApplicationAdapter {
-
+public class Player {
     private Sound shootSound;
     private Texture shipTexture;
     private Rectangle shipRectangle;
     private SpriteBatch batch;
     private PlayerProjectile projectile;
 
-    @Override
-    public void create() {
-
+    public Player() {
+        //Controllers.addListener((ControllerListener) this);
         if (loadTexture()) {
             System.out.println("Failed to load texture.");
             Gdx.app.exit();
@@ -37,11 +35,9 @@ public class Player extends ApplicationAdapter {
         shootSound = Gdx.audio.newSound(Gdx.files.internal("shoot.wav"));
 
         batch = new SpriteBatch();
-
     }
 
-    public boolean loadTexture()
-    {
+    public boolean loadTexture() {
         boolean result = false;
 
         try
@@ -59,83 +55,91 @@ public class Player extends ApplicationAdapter {
 
     public void shot() {
 
-        if(Gdx.input.isKeyPressed(Input.Keys.A))
-            if (!projectile.getVisible())
-            {
+        if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+            if (!projectile.getVisible()) {
                 shootSound.play();
                 System.out.println(projectile.getNumber());
                 projectile.setVisible(true);
                 projectile.shoot(shipRectangle.x, shipRectangle.y);
             }
-
-    }
-
-    public void changeNumber(){
-
-        boolean qPressed = false;
-        boolean ePressed = false;
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-            qPressed = true;
-            ePressed = false;
-        }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
-            ePressed = true;
-            qPressed = false;
-        }
-
-        if(qPressed) {
-            projectile.substractNumber();
-        }
-        if(ePressed) {
-            projectile.addNumber();
         }
     }
 
     public void move() {
         float speed = 200 * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            shipRectangle.x -= speed;
+        float xAxisValue = 0;
+        float yAxisValue = 0;
+
+        // Check if a controller is connected
+        if (Controllers.getControllers().size > 0) {
+            // Get the first connected controller
+            Controller controller = Controllers.getControllers().first();
+
+            // Retrieve the D-pad values for movement
+            if (controller.getButton(0))
+                xAxisValue = -1;
+            else if (controller.getButton(1))
+                xAxisValue = 1;
+
+            if (controller.getButton(2))
+                yAxisValue = -1;
+            else if (controller.getButton(3))
+                yAxisValue = 1;
+        }
+
+        // Use controller values for movement if available
+        if (Math.abs(xAxisValue) > 0.1f) {
+            shipRectangle.x += xAxisValue * speed;
             if (shipRectangle.x < 0) {
                 shipRectangle.x = 0;
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            shipRectangle.x += speed;
-            if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width) {
+            } else if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width) {
                 shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            shipRectangle.y += speed;
-            if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height) {
+        if (Math.abs(yAxisValue) > 0.1f) {
+            shipRectangle.y -= yAxisValue * speed;
+            if (shipRectangle.y < 0) {
+                shipRectangle.y = 0;
+            } else if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height) {
                 shipRectangle.y = Gdx.graphics.getHeight() - shipRectangle.height;
             }
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            shipRectangle.y -= speed;
-            if (shipRectangle.y < 0) {
-                shipRectangle.y = 0;
+
+        // Use keyboard input if no controller input is detected
+        if (Math.abs(xAxisValue) <= 0.1f && Math.abs(yAxisValue) <= 0.1f) {
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                shipRectangle.x -= speed;
+                if (shipRectangle.x < 0) {
+                    shipRectangle.x = 0;
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                shipRectangle.x += speed;
+                if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width) {
+                    shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width;
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                shipRectangle.y += speed;
+                if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height) {
+                    shipRectangle.y = Gdx.graphics.getHeight() - shipRectangle.height;
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                shipRectangle.y -= speed;
+                if (shipRectangle.y < 0) {
+                    shipRectangle.y = 0;
+                }
             }
         }
     }
 
-    @Override
-    public void render()
-    {
-        ScreenUtils.clear(1, 1, 1, 1);
 
-        batch.begin();
+    public void draw(SpriteBatch batch) {
         batch.draw(shipTexture, shipRectangle.x, shipRectangle.y);
         projectile.draw(batch);
-        batch.end();
 
-        move();
         shot();
-        changeNumber();
-
-        //projectile.shoot(shipRectangle.x, shipRectangle.y);
+        move();
     }
-
-
 }

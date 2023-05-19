@@ -1,29 +1,23 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 
 public class PlayerProjectile {
-
     private int number = 1;
-
     private boolean isFired;
-
     private Rectangle projectile;
-
     private boolean visibility;
     private Texture projectileTexture;
     private Texture numbersTexture;
     private Rectangle projectileRectangle;
-
     private TextureRegion[] bulletOfSets;
 
     public PlayerProjectile() {
-
         loadTexture();
 
         //visibility = false;
@@ -74,7 +68,6 @@ public class PlayerProjectile {
     }
     
     public void draw(SpriteBatch batch) {
-
         if (isFired) {
 
             projectile.y += 250 * Gdx.graphics.getDeltaTime();
@@ -86,6 +79,8 @@ public class PlayerProjectile {
                 visibility = false;
             }
         }
+
+        changeNumber();
     }
 
 
@@ -127,8 +122,26 @@ public class PlayerProjectile {
         //return result;
     }
 
-    public void projectileMovement() {
+    public void changeNumber(){
 
+        boolean qPressed = false;
+        boolean ePressed = false;
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+            qPressed = true;
+            ePressed = false;
+        }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            ePressed = true;
+            qPressed = false;
+        }
+
+        if(qPressed) {
+            substractNumber();
+        }
+        if(ePressed) {
+            addNumber();
+        }
     }
 
     public boolean isFired() {
