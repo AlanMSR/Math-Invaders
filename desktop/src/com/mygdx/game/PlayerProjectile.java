@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 
 public class PlayerProjectile {
     private int number = 1;
@@ -49,19 +51,19 @@ public class PlayerProjectile {
     }
 
     public void substractNumber() {
-        if(!visibility){
+        if (!visibility) {
             number = number - 1;
-            if(number < 1 ){
-            number = 1;
+            if (number < 1) {
+                number = 1;
             }
         }
     }
 
     public void addNumber() {
-        if(!visibility){
+        if (!visibility) {
             number = number + 1;
 
-            if(number > 9 ){
+            if (number > 9) {
                 number = 9;
             }
         }
@@ -142,6 +144,8 @@ public class PlayerProjectile {
         if(ePressed) {
             addNumber();
         }
+
+
     }
 
     public boolean isFired() {
