@@ -9,8 +9,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 
-public class Player {
-    private int playerNumber; // Player number: 1 or 2
+public class Player extends Entity {
+    private final int playerNumber; // Player number: 1 or 2
     private Sound shootSound;
     private Texture shipTexture;
     private Rectangle shipRectangle;
@@ -18,8 +18,11 @@ public class Player {
     Controller controller;
     private boolean leftShoulderPressed = false;
     private boolean rightShoulderPressed = false;
+    private boolean hasShot = false;
 
     public Player(int playerNumber) {
+
+        super();
         this.playerNumber = playerNumber;
         if (loadTexture()) {
             System.out.println("Failed to load texture.");
@@ -46,8 +49,12 @@ public class Player {
 
         try
         {
-            shipTexture = new Texture(Gdx.files.internal("red_ship.png"));
-
+            if (playerNumber == 1) {
+                //shipTexture = new Texture(Gdx.files.internal("blue_ship.png"));
+                shipTexture = new Texture(Gdx.files.internal("ship_sprite.png"));
+            } else {
+                shipTexture = new Texture(Gdx.files.internal("red_ship.png"));
+            }
         } catch (Exception e) {
             System.out.println("oh no hermano");
             e.printStackTrace();
@@ -56,8 +63,6 @@ public class Player {
 
         return result;
     }
-
-
 
     public void shot() {
         if (Controllers.getControllers().size >= playerNumber) {
@@ -91,7 +96,7 @@ public class Player {
         changeProjectile();
     }
 
-    public void move() {
+    public void movement() {
         float speed = 200 * Gdx.graphics.getDeltaTime();
         float xAxisValue = 0;
         float yAxisValue = 0;
@@ -221,8 +226,15 @@ public class Player {
         batch.draw(shipTexture, shipRectangle.x, shipRectangle.y);
         projectile.draw(batch);
 
-
         shot();
-        move();
+        movement();
+    }
+
+    public void setHasShotTrue(){
+        hasShot = true;
+    }
+
+    public PlayerProjectile getProjectile() {
+        return this.projectile;
     }
 }
