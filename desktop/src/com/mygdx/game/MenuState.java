@@ -41,9 +41,9 @@ public class MenuState implements Screen {
         skin = new Skin();
 
         // Load individual textures for the UI elements
-        Texture playButtonTexture = new Texture(Gdx.files.internal("playButtonn.png"));
-        Texture optionsButtonTexture = new Texture(Gdx.files.internal("playButtonn.png"));
-        Texture exitButtonTexture = new Texture(Gdx.files.internal("playButtonn.png"));
+        Texture playButtonTexture = new Texture(Gdx.files.internal("ship_sprite.png"));
+        Texture optionsButtonTexture = new Texture(Gdx.files.internal("ship_sprite.png"));
+        Texture exitButtonTexture = new Texture(Gdx.files.internal("ship_sprite.png"));
 
         // Create the styles for the buttons using the textures
         TextButton.TextButtonStyle playButtonStyle = new TextButton.TextButtonStyle();

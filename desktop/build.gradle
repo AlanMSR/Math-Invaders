@@ -41,6 +41,10 @@ task dist(type: Jar) {
     with jar
 }
 
+dependencies {
+    implementation 'com.badlogicgames.gdx:gdx-tools:1.11.0'
+}
+
 
 dist.dependsOn classes
 
