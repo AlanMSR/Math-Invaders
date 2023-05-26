@@ -29,13 +29,15 @@ public class Player extends Entity {
             Gdx.app.exit();
         }
 
-        projectile = new PlayerProjectile();
+
 
         shipRectangle = new Rectangle();
         shipRectangle.x = 800 / 2 - 64 / 2;
         if (playerNumber == 1) {
+            projectile = new PlayerProjectile(1);
             shipRectangle.y = 20;
         } else {
+            projectile = new PlayerProjectile(2);
             shipRectangle.y = 100;
         }
         shipRectangle.width = 64;
@@ -51,7 +53,7 @@ public class Player extends Entity {
         {
             if (playerNumber == 1) {
                 //shipTexture = new Texture(Gdx.files.internal("blue_ship.png"));
-                shipTexture = new Texture(Gdx.files.internal("ship_sprite.png"));
+                shipTexture = new Texture(Gdx.files.internal("navegod.png"));
             } else {
                 shipTexture = new Texture(Gdx.files.internal("red_ship.png"));
             }
@@ -230,8 +232,8 @@ public class Player extends Entity {
         movement();
     }
 
-    public void setHasShotTrue(){
-        hasShot = true;
+    public int getPlayerNumber(){
+        return playerNumber;
     }
 
     public PlayerProjectile getProjectile() {

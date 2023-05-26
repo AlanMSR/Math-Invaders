@@ -16,11 +16,12 @@ public class PlayerProjectile {
     private boolean visibility;
     private Texture projectileTexture;
     private Texture numbersTexture;
-    private Rectangle projectileRectangle;
     private TextureRegion[] bulletOfSets;
+    private int id;
 
-    public PlayerProjectile() {
+    public PlayerProjectile(int id) {
         loadTexture();
+        this.id = id;
 
         //visibility = false;
 
@@ -144,16 +145,26 @@ public class PlayerProjectile {
         if(ePressed) {
             addNumber();
         }
-
-
     }
 
+    public void setFired(boolean value){
+        isFired = value;
+    }
     public boolean isFired() {
         return isFired;
     }
 
     public Rectangle getProjectile() {
         return projectile;
+    }
+
+    public void setCoords(float x,float y){
+        projectile.x = x;
+        projectile.y = y;
+    }
+
+    public int getId(){
+        return id;
     }
 
 }

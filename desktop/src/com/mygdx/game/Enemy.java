@@ -1,5 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 public abstract class Enemy extends Entity{
@@ -12,9 +16,5 @@ public abstract class Enemy extends Entity{
 
     }
 
-    public void checkCollision(PlayerProjectile bala){
-        if(bala.getProjectile().overlaps(this.entityCoords)) {
-            System.out.println("CHOCO EEEEEEE");
-        }
-    }
+    abstract void checkCollision(PlayerProjectile bala);
 }

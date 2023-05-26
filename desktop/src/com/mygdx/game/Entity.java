@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.graphics.Texture;
 
 public abstract class Entity {
-    private int healthPoints;
+    protected int healthPoints;
     protected Texture sprite;
     protected Rectangle entityCoords;
     private Sound sound;
