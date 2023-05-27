@@ -2,140 +2,89 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class MenuState implements Screen {
-    private SpriteBatch batch;
-    protected Stage stage;
+import javax.swing.event.CaretListener;
+
+public class MenuState extends ScreenAdapter {
+    private Stage stage;
     private Viewport viewport;
-    private OrthographicCamera camera;
-    //private TextureAtlas atlas;
+    private TextureAtlas atlas;
     protected Skin skin;
+    private Table mainTable;
 
     public MenuState() {
-        batch = new SpriteBatch();
-        camera = new OrthographicCamera();
-        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getWidth(), camera);
-        viewport.apply();
-
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        camera.update();
-
-        stage = new Stage(viewport, batch);
-
-        skin = new Skin();
-
-        // Load individual textures for the UI elements
-        Texture playButtonTexture = new Texture(Gdx.files.internal("playButtonn.png"));
-        Texture optionsButtonTexture = new Texture(Gdx.files.internal("playButtonn.png"));
-        Texture exitButtonTexture = new Texture(Gdx.files.internal("playButtonn.png"));
-
-        // Create the styles for the buttons using the textures
-        TextButton.TextButtonStyle playButtonStyle = new TextButton.TextButtonStyle();
-        playButtonStyle.up = new TextureRegionDrawable(new TextureRegion(playButtonTexture));
-        TextButton.TextButtonStyle optionsButtonStyle = new TextButton.TextButtonStyle();
-        optionsButtonStyle.up = new TextureRegionDrawable(new TextureRegion(optionsButtonTexture));
-        TextButton.TextButtonStyle exitButtonStyle = new TextButton.TextButtonStyle();
-        exitButtonStyle.up = new TextureRegionDrawable(new TextureRegion(exitButtonTexture));
-
-        // Set the styles for the buttons in the skin
-        skin.add("default", playButtonStyle, TextButton.TextButtonStyle.class);
-        skin.add("default", optionsButtonStyle, TextButton.TextButtonStyle.class);
-        skin.add("default", exitButtonStyle, TextButton.TextButtonStyle.class);
+        atlas = new TextureAtlas("uiskin.atlas");
+        //atlas = new TextureAtlas("skin.atlas");
+        skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
+        //skin = new Skin(Gdx.files.internal("uiskin.json"));
+        //skin.addRegions(atlas);
     }
-
 
     @Override
     public void show() {
-        //Stage should controll input:
-        Gdx.input.setInputProcessor(stage);
+        viewport =  new ExtendViewport(1280,720);
+        stage = new Stage(viewport);
 
-        //Create Table
-        Table mainTable = new Table();
-        //Set table to fill stage
+        mainTable = new Table();
         mainTable.setFillParent(true);
-        //Set alignment of contents in the table.
-        mainTable.top();
 
-        //Create buttons
-        TextButton playButton = new TextButton("Play", skin);
-        TextButton optionsButton = new TextButton("Options", skin);
-        TextButton exitButton = new TextButton("Exit", skin);
+        stage.addActor(mainTable);
 
-        //Add listeners to buttons
-        playButton.addListener(new ClickListener() {
+        addButton("Play").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((Game) Gdx.app.getApplicationListener()).setScreen(new GameplayScreen());
             }
         });
-        exitButton.addListener(new ClickListener() {
+
+        addButton("Leaderboard").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+
             }
         });
 
-        //Add buttons to table
-        mainTable.add(playButton);
-        mainTable.row();
-        mainTable.add(optionsButton);
-        mainTable.row();
-        mainTable.add(exitButton);
+        addButton("Quit").addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // exit game/ guardar data para leaderboard
+            }
+        });
 
-        //Add table to stage
-        stage.addActor(mainTable);
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    private TextButton addButton(String name) {
+        TextButton button = new TextButton(name, skin);
+        mainTable.add(button).width(400).height(80).padBottom(20);
+        mainTable.row();
+        return button;
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
+        ScreenUtils.clear(0.2f, 0.6f, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         stage.act();
+
         stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
-        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
-        camera.update();
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        skin.dispose();
-        //atlas.dispose();
     }
 }

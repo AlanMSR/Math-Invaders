@@ -1,9 +1,5 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 
 public abstract class Enemy extends Entity{
@@ -16,5 +12,5 @@ public abstract class Enemy extends Entity{
 
     }
 
-    abstract void checkCollision(PlayerProjectile bala);
+    abstract boolean checkCollision(Player player);
 }

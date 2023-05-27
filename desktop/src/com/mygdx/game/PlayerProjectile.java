@@ -100,14 +100,12 @@ public class PlayerProjectile {
     public void shoot(float shipX, float shipY) {
 
         if (!isFired) {
-            projectile.set(shipX + 8, shipY, 32, 32);
+            projectile.set(shipX + 30, shipY, 32, 32);
             isFired = true;
         }
     }
 
     public void loadTexture() {
-
-        //boolean result = false;
 
         try
         {

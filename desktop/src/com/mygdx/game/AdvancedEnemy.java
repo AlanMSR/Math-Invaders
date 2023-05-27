@@ -23,19 +23,20 @@ public class AdvancedEnemy extends BasicEnemy{
 
     public AdvancedEnemy() {
         super(2, "enemy_prueba.png", null);
-        this.speed = 200;
-        setCoords(400,600);
+        this.speed = 30;
+        setCoords(400,900);
         // Variables de prueba/ may change latta idfk
         this.angle = 0;
-        this.radius = 20;
-        this.centerX = 100;
-        this.centerY = 100;
+        this.radius = 70;
+        this.centerX = 300;
+        this.centerY = 500;
 
         //
         this.answer = 2;
     }
 
-    public void checkAnswer(PlayerProjectile bala) {
+    public void checkAnswer(Player player) {
+        PlayerProjectile bala = player.getProjectile();
         if (bala.getId() == 1) {
             this.p1BShot = true;
             this.p1Damage = bala.getNumber();
@@ -64,6 +65,7 @@ public class AdvancedEnemy extends BasicEnemy{
                 p2BShot = false;
                 p1Damage = 0;
                 p2Damage = 0;
+                player.setScore(3);
             }
         }
         System.out.println("Vida: " + healthPoints);
@@ -73,10 +75,13 @@ public class AdvancedEnemy extends BasicEnemy{
         angle += speed * Gdx.graphics.getDeltaTime();
         float x = centerX + radius * MathUtils.cosDeg(angle);
         float y = centerY + radius * MathUtils.sinDeg(angle);
-        setCoords(x, y);
+        float downOffset = speed * Gdx.graphics.getDeltaTime(); // Valor de desplazamiento hacia abajo
+        setCoords(x, y - downOffset); // Restamos el desplazamiento hacia abajo a la coordenada y
+        centerY -= downOffset; // Movemos también el centro del círculo hacia abajo
     }
 
-    public void checkCollision(PlayerProjectile bala) {
+    public boolean checkCollision(Player player) {
+        PlayerProjectile bala = player.getProjectile();
         if (!invincibility) {
             if (bala.getProjectile().overlaps(this.entityCoords)) {
                 System.out.println("ITS PUGGERING");
@@ -84,9 +89,11 @@ public class AdvancedEnemy extends BasicEnemy{
                 bala.setFired(false);
                 bala.setCoords(0, Gdx.graphics.getHeight() + 10);
 
-                checkAnswer(bala);
+                checkAnswer(player);
+                return true;
             }
         }
+        return false;
     }
 
     public void draw(SpriteBatch batch) {

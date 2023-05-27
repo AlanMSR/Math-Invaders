@@ -19,6 +19,7 @@ public class Player extends Entity {
     private boolean leftShoulderPressed = false;
     private boolean rightShoulderPressed = false;
     private boolean hasShot = false;
+    private int score = 0;
 
     public Player(int playerNumber) {
 
@@ -28,8 +29,6 @@ public class Player extends Entity {
             System.out.println("Failed to load texture.");
             Gdx.app.exit();
         }
-
-
 
         shipRectangle = new Rectangle();
         shipRectangle.x = 800 / 2 - 64 / 2;
@@ -224,12 +223,16 @@ public class Player extends Entity {
 
     }
 
-    public void draw(SpriteBatch batch) {
-        batch.draw(shipTexture, shipRectangle.x, shipRectangle.y);
-        projectile.draw(batch);
-
+    public void update() {
         shot();
         movement();
+    }
+
+    public void draw(SpriteBatch batch) {
+        update();
+
+        batch.draw(shipTexture, shipRectangle.x, shipRectangle.y);
+        projectile.draw(batch);
     }
 
     public int getPlayerNumber(){
@@ -238,5 +241,9 @@ public class Player extends Entity {
 
     public PlayerProjectile getProjectile() {
         return this.projectile;
+    }
+
+    public void setScore(int score){
+        this.score += score;
     }
 }
