@@ -47,7 +47,6 @@ public class PlayerProjectile {
     }
 
     public int getNumber() {
-
         return this.number;
     }
 

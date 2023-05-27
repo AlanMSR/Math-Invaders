@@ -130,10 +130,10 @@ public class Player extends Entity {
         // Use controller values for movement if available
         if (xAxisValue != 0) {
             shipRectangle.x += xAxisValue * speed;
-            if (shipRectangle.x < 0) {
-                shipRectangle.x = 0;
-            } else if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width) {
-                shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width;
+            if (shipRectangle.x < 120) {
+                shipRectangle.x = 120;
+            } else if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - 120) {
+                shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - 120;
             }
         }
         if (yAxisValue != 0) {
@@ -157,8 +157,8 @@ public class Player extends Entity {
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                     shipRectangle.x += speed;
-                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width) {
-                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width;
+                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - 120) {
+                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - 120;
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -177,19 +177,19 @@ public class Player extends Entity {
                 // Player 2 keyboard input logic
                 if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                     shipRectangle.x -= speed;
-                    if (shipRectangle.x < 0) {
-                        shipRectangle.x = 0;
+                    if (shipRectangle.x < 120) {
+                        shipRectangle.x = 120;
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.D)) {
                     shipRectangle.x += speed;
-                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width) {
-                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width;
+                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - 120) {
+                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - 120;
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                     shipRectangle.y += speed;
-                    if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height) {
+                    if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height - 120) {
                         shipRectangle.y = Gdx.graphics.getHeight() - shipRectangle.height;
                     }
                 }
@@ -245,5 +245,9 @@ public class Player extends Entity {
 
     public void setScore(int score){
         this.score += score;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

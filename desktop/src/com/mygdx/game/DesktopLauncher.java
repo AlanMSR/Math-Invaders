@@ -11,8 +11,8 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("pugagamer");
-		config.setWindowedMode(800, 480);
-		config.setWindowSizeLimits(800, 480, 800, 480);
+		config.setWindowedMode(1200, 480);
+		config.setWindowSizeLimits(800, 480, 900, 480);
 		Gdx.files = new Lwjgl3Files();
 		new Lwjgl3Application(new Runner(), config);
 	}

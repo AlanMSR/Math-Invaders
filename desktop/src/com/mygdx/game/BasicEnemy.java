@@ -12,7 +12,9 @@ public class BasicEnemy extends Enemy{
     public BasicEnemy(){
         super(1, "enemig_prueba2.png", null);
         Random r = new Random();
-        setCoords(r.nextInt(Gdx.graphics.getWidth()),Gdx.graphics.getHeight() + 10);
+        int minRange = 120;
+        int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
+        setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + 10);
         entityCoords.width = 42;
         entityCoords.height = 28;
         speed = 50; // Velocidad de movimiento del enemigo (ajústala según tus necesidades)
@@ -33,7 +35,10 @@ public class BasicEnemy extends Enemy{
 
     private void reposition(){
         Random r = new Random();
-        setCoords(r.nextInt(Gdx.graphics.getWidth()),Gdx.graphics.getHeight() + 10);
+        int minRange = 120;
+        int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
+        int heightCooldown = r.nextInt(50);
+        setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
     }
 
     public boolean checkCollision(Player player) {
@@ -44,6 +49,7 @@ public class BasicEnemy extends Enemy{
             bala.setFired(false);
             bala.setCoords(0, Gdx.graphics.getHeight() + 10);
             reposition();
+            player.setScore(1);
             return true;
         }
         return false;
