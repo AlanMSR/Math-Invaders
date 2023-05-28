@@ -31,6 +31,10 @@ public class BasicEnemy extends Enemy{
 
         // Actualiza la posición del enemigo
         entityCoords.y += displacementY;
+
+        if(entityCoords.y < 0){
+            reposition();
+        }
     }
 
     private void reposition(){

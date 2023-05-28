@@ -114,7 +114,7 @@ public class GameScene {
         private Rectangle container, imageContainer;
         final private Texture persona, backgrond;
         final private TextureRegion imageRegion, backgroundRegion;
-        private Rectangle currentBullet;
+        private Rectangle currentBullet, previousBullet, nextBullet;
         private Texture numbersTexture;
         private TextureRegion[] bulletOfSets;
         private int score = 0;
@@ -126,24 +126,32 @@ public class GameScene {
             persona = new Texture(Gdx.files.internal(image_path));
             imageRegion = new TextureRegion(persona);
 
-            backgrond = new Texture(Gdx.files.internal("blueInterface.png"));
-            backgroundRegion = new TextureRegion(backgrond);
+            if (playerN == 1) {
+                backgrond = new Texture(Gdx.files.internal("GUIJ1.png"));
+                backgroundRegion = new TextureRegion(backgrond);
+            } else {
+                backgrond = new Texture(Gdx.files.internal("GUIJ2V2.png"));
+                backgroundRegion = new TextureRegion(backgrond);
+            }
 
             container = new Rectangle(0, 0,120, Gdx.graphics.getHeight());
 
-            imageContainer = new Rectangle(container.width - 60 - 30, container.height - 90 - 80, 60, 90);
+            imageContainer = new Rectangle(container.width - 60 - 20, container.height - 90 - 70, 60, 90);
             System.out.println(imageRegion.getRegionHeight());
 
             font = new BitmapFont();
             fontCoords = new SimplePoint();
-            fontCoords.setLocation(container.width - 60 - 30, container.height - 90 - 280);
+            fontCoords.setLocation(container.width - 60 - 23, container.height - 90 - 105);
 
             player = new BitmapFont();
             playerCoords = new SimplePoint();
             playerCoords.setLocation(container.width - 90, container.height - 40);
 
-            currentBullet = new Rectangle(container.width - 60 - 15, container.height - 90 - 150, 30, 30);
+            currentBullet = new Rectangle(container.width - 60 - 10, container.height - 90 - 320, 30, 30);
             numbersTexture = new Texture(Gdx.files.internal("numbers&shi.png"));
+
+            previousBullet = new Rectangle(container.width - 60 - 40, container.height - 90 - 360, 20, 20);
+            nextBullet = new Rectangle(container.width - 60 + 30, container.height - 90 - 250, 20, 20);
 
             bulletOfSets = new TextureRegion[9];
             bulletOfSets[0] = new TextureRegion(numbersTexture, 178, 258, 12, 30);
@@ -159,8 +167,13 @@ public class GameScene {
 
         public void setToRight() {
             container.x = Gdx.graphics.getWidth() - 120;
-            this.imageContainer.x = container.x + 60 - 30;
-            this.currentBullet.x = container.x + 60 - 15;
+            this.imageContainer.x = container.x + 60 - 40;
+            this.currentBullet.x = container.x + 60 - 23;
+            this.currentBullet.y = container.y + 80; //brute force baby
+            this.previousBullet.x = container.x + 60 - 50;
+            this.previousBullet.y = container.y + 40;
+            this.nextBullet.x = container.x + 60 + 20;
+            this.nextBullet.y = container.y + 150;
             this.fontCoords.setLocation(container.x + 60 - 30, fontCoords.getY());
             this.playerCoords.setLocation(container.x + 60 - 30, playerCoords.getY());
         }
@@ -173,11 +186,23 @@ public class GameScene {
             this.score = score;
         }
 
+        public int checkBulletNumber(int number) {
+            if (number > 8)
+                number = 0;
+            if (number == -1) {
+                number = 8;
+            }
+
+            return number;
+        }
+
         public void draw(SpriteBatch batch) {
             batch.draw(backgroundRegion, container.x, container.y, container.width, container.height);
-            player.draw(batch, "Player " + playerN, playerCoords.getX(), playerCoords.getY());
+            //player.draw(batch, "Player " + playerN, playerCoords.getX(), playerCoords.getY());
             batch.draw(imageRegion, imageContainer.x, imageContainer.y, imageContainer.width, imageContainer.height);
             batch.draw(bulletOfSets[number - 1], currentBullet.x, currentBullet.y, currentBullet.width, currentBullet.height);
+            batch.draw(bulletOfSets[checkBulletNumber(number - 2)], previousBullet.x, previousBullet.y, previousBullet.width, previousBullet.height);
+            batch.draw(bulletOfSets[checkBulletNumber(number)], nextBullet.x, nextBullet.y, nextBullet.width, nextBullet.height);
             font.draw(batch, "Score: " + score, fontCoords.getX(), fontCoords.getY());
         }
     }
