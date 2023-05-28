@@ -71,15 +71,23 @@ public class GameScene {
         boolean p1Kill, p2Kill;
 
         for(Enemy enemy : enemies) {
-            p1Kill = enemy.checkCollision(player1);
-            p2Kill = enemy.checkCollision(player2);
+            if (enemy instanceof BasicEnemy) {
+                p1Kill = enemy.checkCollision(player1);
+                p2Kill = enemy.checkCollision(player2);
 
-            if(p1Kill || p2Kill){
-                if (enemy instanceof BasicEnemy)
+                if(p1Kill || p2Kill){
                     basicDefeated++;
                     System.out.println("basicdead: " + basicDefeated);
-                if (enemy instanceof AdvancedEnemy)
-                    advancedDefeated++;
+                }
+            }
+            if (enemy instanceof AdvancedEnemy) {
+                p1Kill = enemy.checkCollision(player1);
+                p2Kill = enemy.checkCollision(player2);
+
+                if(p1Kill || p2Kill){
+                   advancedDefeated++;
+                    System.out.println("advanceddead: " + advancedDefeated);
+                }
             }
         }
 

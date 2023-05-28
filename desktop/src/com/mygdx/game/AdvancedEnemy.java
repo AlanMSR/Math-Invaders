@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import java.util.Random;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Intersector;
-
-import java.util.Random;
 
 public class AdvancedEnemy extends BasicEnemy{
     private float centerX;
@@ -25,17 +22,18 @@ public class AdvancedEnemy extends BasicEnemy{
         super(2, "enemy_prueba.png", null);
         this.speed = 30;
         setCoords(400,900);
+        entityCoords.width = 42;
+        entityCoords.height = 28;
         // Variables de prueba/ may change latta idfk
         this.angle = 0;
         this.radius = 70;
         this.centerX = 300;
         this.centerY = 500;
-
         //
         this.answer = 2;
     }
 
-    public void checkAnswer(Player player) {
+    public boolean checkAnswer(Player player) {
         PlayerProjectile bala = player.getProjectile();
         if (bala.getId() == 1) {
             this.p1BShot = true;
@@ -52,12 +50,6 @@ public class AdvancedEnemy extends BasicEnemy{
                 healthPoints -= totalDamage;
                 System.out.println("Enemy killed");
                 Random random = new Random();
-                int x = random.nextInt(Gdx.graphics.getWidth());
-                int y = Gdx.graphics.getHeight() + 10;
-                //entityCoords.x = 800;
-                this.centerX = x;
-                this.setCoords(centerX, y);
-                System.out.println(entityCoords);
 
                 healthPoints = random.nextInt(9) + 1;
                 answer = healthPoints;
@@ -66,9 +58,16 @@ public class AdvancedEnemy extends BasicEnemy{
                 p1Damage = 0;
                 p2Damage = 0;
                 player.setScore(3);
+                reposition();
+                return false;
+            }
+            else {
+                invincibility = true;
             }
         }
+
         System.out.println("Vida: " + healthPoints);
+        return false;
     }
 
     public void movement() {
@@ -78,6 +77,23 @@ public class AdvancedEnemy extends BasicEnemy{
         float downOffset = speed * Gdx.graphics.getDeltaTime(); // Valor de desplazamiento hacia abajo
         setCoords(x, y - downOffset); // Restamos el desplazamiento hacia abajo a la coordenada y
         centerY -= downOffset; // Movemos también el centro del círculo hacia abajo
+
+        if(entityCoords.y < 0){
+            reposition();
+            this.invincibility = false;
+            //changeText
+        }
+    }
+
+    private void reposition() {
+        Random r = new Random();
+        int minRange = 130;
+        int maxRange = Gdx.graphics.getWidth() - 175; // 120 + 42
+        int heightCooldown = r.nextInt(80);
+        centerX = r.nextInt(minRange, maxRange);
+        centerY = Gdx.graphics.getHeight() + heightCooldown;
+        //setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
+        //System.out.println("donde estas? " + entityCoords);
     }
 
     public boolean checkCollision(Player player) {
@@ -89,8 +105,8 @@ public class AdvancedEnemy extends BasicEnemy{
                 bala.setFired(false);
                 bala.setCoords(0, Gdx.graphics.getHeight() + 10);
 
-                checkAnswer(player);
-                return true;
+                return checkAnswer(player);
+                //return true;
             }
         }
         return false;

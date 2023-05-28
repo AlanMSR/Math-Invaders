@@ -41,7 +41,7 @@ public class BasicEnemy extends Enemy{
         Random r = new Random();
         int minRange = 120;
         int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
-        int heightCooldown = r.nextInt(50);
+        int heightCooldown = r.nextInt(80);
         setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
     }
 

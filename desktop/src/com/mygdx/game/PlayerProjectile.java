@@ -72,7 +72,7 @@ public class PlayerProjectile {
     public void draw(SpriteBatch batch) {
         if (isFired) {
 
-            projectile.y += 800 * Gdx.graphics.getDeltaTime();
+            projectile.y += 850 * Gdx.graphics.getDeltaTime();
             batch.draw(bulletOfSets[number - 1], projectile.x, projectile.y);
 
             if (projectile.y > Gdx.graphics.getHeight()) {
@@ -99,7 +99,7 @@ public class PlayerProjectile {
     public void shoot(float shipX, float shipY) {
 
         if (!isFired) {
-            projectile.set(shipX + 30, shipY, 32, 32);
+            projectile.set(shipX + 30, shipY, 12, 30);
             isFired = true;
         }
     }
