@@ -46,8 +46,11 @@ public class GameScene {
         advancedEnemy = new AdvancedEnemy();
         basicEnemy = new BasicEnemy();
 
+        FinalBoss boss = new FinalBoss();
+
         enemies.add(advancedEnemy);
         enemies.add(basicEnemy);
+        enemies.add(boss);
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         backgroundTexture = new Texture("bg3.png");
         backgroundSprite =new Sprite(backgroundTexture);

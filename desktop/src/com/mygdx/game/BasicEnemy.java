@@ -10,13 +10,13 @@ public class BasicEnemy extends Enemy{
     private float speed;
 
     public BasicEnemy(){
-        super(1, "enemig_prueba2.png", null);
+        super(1, "huever.png", null);
         Random r = new Random();
         int minRange = 120;
         int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
         setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + 10);
-        entityCoords.width = 42;
-        entityCoords.height = 28;
+        entityCoords.width = 40;
+        entityCoords.height = 42;
         speed = 50; // Velocidad de movimiento del enemigo (ajústala según tus necesidades)
     }
     public BasicEnemy(int healthPoints, String sprite, Sound sound) {
@@ -64,7 +64,7 @@ public class BasicEnemy extends Enemy{
     }
 
     public void draw(SpriteBatch batch){
-        batch.draw(sprite, entityCoords.x, entityCoords.y);
+        batch.draw(sprite, entityCoords.x, entityCoords.y, entityCoords.width, entityCoords.height);
         update();
     }
 }

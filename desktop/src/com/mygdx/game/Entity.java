@@ -12,7 +12,7 @@ public abstract class Entity {
     protected Rectangle entityCoords;
     private Sound sound;
     private SpriteBatch batch;
-    private boolean isAlive = true;
+    protected boolean isAlive = true;
 
     public Entity(){
 

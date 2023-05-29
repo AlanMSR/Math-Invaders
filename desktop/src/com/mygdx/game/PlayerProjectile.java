@@ -85,7 +85,6 @@ public class PlayerProjectile {
         changeNumber();
     }
 
-
     public void setVisible(boolean value) {
 
         visibility = value;

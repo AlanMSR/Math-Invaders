@@ -2,8 +2,13 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import java.util.Random;
+
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 
 public class AdvancedEnemy extends BasicEnemy{
     private float centerX;
@@ -17,20 +22,29 @@ public class AdvancedEnemy extends BasicEnemy{
     public boolean p2BShot = false;
     private int p1Damage;
     private int p2Damage;
+    private TextureRegion[] enemiesSprites;
+    private Texture prueba;
 
     public AdvancedEnemy() {
-        super(2, "enemy_prueba.png", null);
+        super(2,"enemy_ships.png",null);
         this.speed = 30;
         setCoords(400,900);
-        entityCoords.width = 42;
-        entityCoords.height = 28;
+        entityCoords.width = 32;
+        entityCoords.height = 45;
         // Variables de prueba/ may change latta idfk
         this.angle = 0;
         this.radius = 70;
         this.centerX = 300;
         this.centerY = 500;
-        //
         this.answer = 2;
+
+        prueba = new Texture("huever.png");
+        this.enemiesSprites = new TextureRegion[16];
+        loadSprites();
+    }
+
+    public AdvancedEnemy(int healthPoints,String sprite, Sound sound){
+        super(healthPoints, sprite, sound);
     }
 
     public boolean checkAnswer(Player player) {
@@ -51,7 +65,7 @@ public class AdvancedEnemy extends BasicEnemy{
                 System.out.println("Enemy killed");
                 Random random = new Random();
 
-                healthPoints = random.nextInt(9) + 1;
+                healthPoints = random.nextInt(2,17);
                 answer = healthPoints;
                 p1BShot = false;
                 p2BShot = false;
@@ -70,7 +84,28 @@ public class AdvancedEnemy extends BasicEnemy{
         return false;
     }
 
+    public void loadSprites() {
+
+        enemiesSprites[0] = new TextureRegion(sprite, 40, 0,  122, 270); //numero 2
+        enemiesSprites[1] = new TextureRegion(sprite, 224, 0, 122, 270);
+        enemiesSprites[2] = new TextureRegion(sprite, 414, 0, 122, 270);
+        enemiesSprites[3] = new TextureRegion(sprite, 606, 0, 122, 270); // numero 5
+        enemiesSprites[4] = new TextureRegion(sprite, 32, 287, 122, 270); //6
+        enemiesSprites[5] = new TextureRegion(sprite, 222, 287, 122, 270); //7
+        enemiesSprites[6] = new TextureRegion(sprite, 402, 287, 122, 270); //8
+        enemiesSprites[7] = new TextureRegion(sprite, 604, 287, 122, 270); // 9
+        enemiesSprites[8] = new TextureRegion(sprite, 32, 575, 122, 270); //10
+        enemiesSprites[9] = new TextureRegion(sprite, 222, 575, 122, 270); // 11
+        enemiesSprites[10] = new TextureRegion(sprite, 402, 575, 122, 270); // 12
+        enemiesSprites[11] = new TextureRegion(sprite, 604, 575, 122, 270); //13
+        enemiesSprites[12] = new TextureRegion(sprite, 32, 863, 122, 270); //14
+        enemiesSprites[13] = new TextureRegion(sprite, 222, 863, 122, 270); //15
+        enemiesSprites[14] = new TextureRegion(sprite, 402, 863, 122, 270); //16
+        enemiesSprites[15] = new TextureRegion(sprite, 604, 863, 122, 270); //17
+    }
+
     public void movement() {
+        Random random = new Random();
         angle += speed * Gdx.graphics.getDeltaTime();
         float x = centerX + radius * MathUtils.cosDeg(angle);
         float y = centerY + radius * MathUtils.sinDeg(angle);
@@ -80,6 +115,8 @@ public class AdvancedEnemy extends BasicEnemy{
 
         if(entityCoords.y < 0){
             reposition();
+            healthPoints = random.nextInt(2,17);
+            answer = healthPoints;
             this.invincibility = false;
             //changeText
         }
@@ -92,7 +129,7 @@ public class AdvancedEnemy extends BasicEnemy{
         int heightCooldown = r.nextInt(80);
         centerX = r.nextInt(minRange, maxRange);
         centerY = Gdx.graphics.getHeight() + heightCooldown;
-        //setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
+        setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
         //System.out.println("donde estas? " + entityCoords);
     }
 
@@ -113,7 +150,8 @@ public class AdvancedEnemy extends BasicEnemy{
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(sprite, entityCoords.x, entityCoords.y);
+        batch.draw(enemiesSprites[answer - 2], entityCoords.x, entityCoords.y, entityCoords.width, entityCoords.height);
+        //batch.draw(prueba, entityCoords.x, entityCoords.y, entityCoords.width, entityCoords.height);
         movement();
         //checkCollision();
     }
