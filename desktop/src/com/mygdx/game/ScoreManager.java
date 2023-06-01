@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScoreManager implements Serializable {
-    private static final String FILE_PATH = "serializable/scores.ser";
+    private static final String FILE_PATH = "scores.ser";
 
     public static void saveScores(List<Integer> scores) {
         List<Integer> existingScores = loadScores();

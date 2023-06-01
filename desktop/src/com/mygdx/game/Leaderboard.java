@@ -63,6 +63,7 @@ public class Leaderboard extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
     }
 
+
     private TextButton addButton(String name) {
         TextButton button = new TextButton(name, skin);
         mainTable.add(button).width(400).height(80).padBottom(20);
@@ -80,7 +81,7 @@ public class Leaderboard extends ScreenAdapter {
         font.draw(batch, "Scores:", 10, Gdx.graphics.getHeight() - 10);
         float y = Gdx.graphics.getHeight() - 30; // y inicial para socores
 
-        for (int i = 0; i < sortedScores.size(); i++) {
+        for (int i = 0; i < 10; i++) {
             int score = sortedScores.get(i);
             font.draw(batch, "Top " + (i + 1) + ": " + score, 10, y);
             y -= 20;

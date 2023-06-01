@@ -32,6 +32,8 @@ public class Player extends Entity {
 
         shipRectangle = new Rectangle();
         shipRectangle.x = 800 / 2 - 64 / 2;
+        shipRectangle.width = 45;
+        shipRectangle.height = 45;
         if (playerNumber == 1) {
             projectile = new PlayerProjectile(1);
             shipRectangle.y = 20;
@@ -52,9 +54,9 @@ public class Player extends Entity {
         {
             if (playerNumber == 1) {
                 //shipTexture = new Texture(Gdx.files.internal("blue_ship.png"));
-                shipTexture = new Texture(Gdx.files.internal("navegod.png"));
+                shipTexture = new Texture(Gdx.files.internal("sfs1.png"));
             } else {
-                shipTexture = new Texture(Gdx.files.internal("red_ship.png"));
+                shipTexture = new Texture(Gdx.files.internal("sfs2.png"));
             }
         } catch (Exception e) {
             System.out.println("oh no hermano");
@@ -98,7 +100,7 @@ public class Player extends Entity {
     }
 
     public void movement() {
-        float speed = 200 * Gdx.graphics.getDeltaTime();
+        float speed = 300 * Gdx.graphics.getDeltaTime();
         float xAxisValue = 0;
         float yAxisValue = 0;
 
@@ -231,7 +233,7 @@ public class Player extends Entity {
     public void draw(SpriteBatch batch) {
         update();
 
-        batch.draw(shipTexture, shipRectangle.x, shipRectangle.y);
+        batch.draw(shipTexture, shipRectangle.x, shipRectangle.y, shipRectangle.width, shipRectangle.height);
         projectile.draw(batch);
     }
 

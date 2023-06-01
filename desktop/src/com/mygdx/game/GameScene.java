@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.graphics.Color;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -35,12 +36,21 @@ public class GameScene {
     private Pause pause;
     private int earthLife = 10;
     private BitmapFont earthLifeFont;
+    private boolean bossSpawned = false;
+    private boolean bossDefeated = false;
+    private FinalBoss boss;
+
 
     public GameScene() {
         batch = new SpriteBatch();
         gamestatus = GAME_RUNNING;
 
         earthLifeFont = new BitmapFont();
+        com.badlogic.gdx.graphics.Color fontColor = Color.BLACK;
+        earthLifeFont.setColor(fontColor);
+
+        int fontSize = 24;  // Set the desired font size
+        earthLifeFont.getData().setScale(fontSize / earthLifeFont.getLineHeight());
 
         player1 = new Player(1);
         player2 = new Player(2);
@@ -59,12 +69,12 @@ public class GameScene {
         enemies = new ArrayList<Enemy>();
         advancedEnemy = new AdvancedEnemy();
         basicEnemy = new BasicEnemy();
+        boss = new FinalBoss();
 
-        FinalBoss boss = new FinalBoss();
 
         enemies.add(advancedEnemy);
         enemies.add(basicEnemy);
-        enemies.add(boss);
+
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         backgroundTexture = new Texture("bg3.png");
         backgroundSprite =new Sprite(backgroundTexture);
@@ -73,16 +83,24 @@ public class GameScene {
     }
 
     private void nSpawn() {
-
+        if(bossDefeated){
+            enemies.remove(boss);
+        }
         if (basicDefeated % 12 == 0 ){
             BasicEnemy newBEnemy = new BasicEnemy();
             enemies.add(newBEnemy);
             basicDefeated = 1;
         }
+
         if (advancedDefeated % 10 == 0){
             AdvancedEnemy newAEnemy = new AdvancedEnemy();
             enemies.add(newAEnemy);
             advancedDefeated = 1;
+        }
+
+        if (basicDefeated > 2 && bossSpawned == false) {
+            enemies.add(boss);
+            bossSpawned = true;
         }
     }
 
@@ -96,7 +114,16 @@ public class GameScene {
                 System.out.println("vider: " + earthLife);
             }
 
-            if (enemy instanceof BasicEnemy) {
+            if(enemy instanceof FinalBoss){
+                p1Kill = enemy.checkCollision(player1);
+                p2Kill = enemy.checkCollision(player2);
+
+                if(enemy.healthPoints <= 0){
+                    System.out.println("Boss derrotado!!!");
+                    bossDefeated = true;
+                }
+            }
+            else if (enemy instanceof BasicEnemy) {
                 p1Kill = enemy.checkCollision(player1);
                 p2Kill = enemy.checkCollision(player2);
 
@@ -105,7 +132,7 @@ public class GameScene {
                     System.out.println("basicdead: " + basicDefeated);
                 }
             }
-            if (enemy instanceof AdvancedEnemy) {
+            else if (enemy instanceof AdvancedEnemy) {
                 p1Kill = enemy.checkCollision(player1);
                 p2Kill = enemy.checkCollision(player2);
 
@@ -139,7 +166,6 @@ public class GameScene {
             else {gamestatus = GAME_RUNNING;}
         }
 
-
         if (gamestatus == GAME_RUNNING) {
 
             backgroundSprite.draw(batch);
@@ -150,7 +176,7 @@ public class GameScene {
             player1.draw(batch);
             player2.draw(batch);
 
-            for (Enemy enemy : enemies){
+            for (Enemy enemy : enemies) {
                 enemy.draw(batch);
             }
             earthLifeFont.draw(batch, "Earth Life:" + this.earthLife, Gdx.graphics.getWidth()/2, 35);
@@ -226,10 +252,10 @@ public class GameScene {
             this.imageContainer.x = container.x + 60 - 40;
             this.currentBullet.x = container.x + 60 - 23;
             this.currentBullet.y = container.y + 80; //brute force baby
-            this.previousBullet.x = container.x + 60 - 50;
-            this.previousBullet.y = container.y + 40;
+            this.previousBullet.x = container.x + 60 - 55;
+            this.previousBullet.y = container.y + 70;
             this.nextBullet.x = container.x + 60 + 20;
-            this.nextBullet.y = container.y + 150;
+            this.nextBullet.y = container.y + 180;
             this.fontCoords.setLocation(container.x + 60 - 30, fontCoords.getY());
             this.playerCoords.setLocation(container.x + 60 - 30, playerCoords.getY());
         }
@@ -283,14 +309,16 @@ public class GameScene {
     private class Pause {
         public Texture backgroundTexture;
         public Sprite backgroundSprite;
+        private Rectangle rectangle;
 
         public Pause() {
-            backgroundTexture = new Texture("pause.png");
+            backgroundTexture = new Texture("pausedI.png");
             backgroundSprite = new Sprite(backgroundTexture);
+            rectangle = new Rectangle(0,0,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         public void draw(SpriteBatch batch) {
             ScreenUtils.clear(0.2f, 0.3f, 0.5f, 0.2f);
-            backgroundSprite.draw(batch);
+            batch.draw(backgroundTexture, rectangle.x, rectangle.y, rectangle.width, rectangle.height);
         }
     }
 }

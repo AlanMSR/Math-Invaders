@@ -14,7 +14,7 @@ public class FinalBoss extends AdvancedEnemy{
         targetY = 360; // Altura objetivo para el movimiento introductorio
         introSpeed = 50; // Velocidad de movimiento introductoria
         entityCoords.width = Gdx.graphics.getWidth() - 240; // 240 por las dos interfaces(120 c/u)
-        entityCoords.height = 200;
+        entityCoords.height = 250;
     }
 
     public void introMovement() {
@@ -40,9 +40,12 @@ public class FinalBoss extends AdvancedEnemy{
             bala.setVisible(false);
             bala.setFired(false);
             bala.setCoords(0, Gdx.graphics.getHeight() + 10);
-            player.setScore(1);
+            player.setScore(15);
             healthPoints -= bala.getNumber();
-            return true;
+            if(healthPoints <= 0) {
+
+                return true;
+            }
         }
         return false;
 
