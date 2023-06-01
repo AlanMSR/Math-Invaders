@@ -32,7 +32,7 @@ public class BasicEnemy extends Enemy{
         // Actualiza la posición del enemigo
         entityCoords.y += displacementY;
 
-        if(entityCoords.y < 0){
+        if(entityCoords.y <= 0){
             reposition();
         }
     }
@@ -58,6 +58,7 @@ public class BasicEnemy extends Enemy{
         }
         return false;
     }
+
 
     public void update() {
         movement();

@@ -113,7 +113,7 @@ public class AdvancedEnemy extends BasicEnemy{
         setCoords(x, y - downOffset); // Restamos el desplazamiento hacia abajo a la coordenada y
         centerY -= downOffset; // Movemos también el centro del círculo hacia abajo
 
-        if(entityCoords.y < 0){
+        if(entityCoords.y <= 0){
             reposition();
             healthPoints = random.nextInt(2,17);
             answer = healthPoints;

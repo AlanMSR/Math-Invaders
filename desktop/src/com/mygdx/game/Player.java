@@ -11,14 +11,14 @@ import com.badlogic.gdx.controllers.Controllers;
 
 public class Player extends Entity {
     private final int playerNumber; // Player number: 1 or 2
-    private Sound shootSound;
+    private final Sound shootSound;
     private Texture shipTexture;
     private Rectangle shipRectangle;
     private PlayerProjectile projectile;
     Controller controller;
     private boolean leftShoulderPressed = false;
     private boolean rightShoulderPressed = false;
-    private boolean hasShot = false;
+    //private boolean hasShot = false;
     private int score = 0;
 
     public Player(int playerNumber) {

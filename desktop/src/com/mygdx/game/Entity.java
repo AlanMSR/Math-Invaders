@@ -55,4 +55,8 @@ public abstract class Entity {
         this.entityCoords.x = x;
         this.entityCoords.y = y;
     }
+
+    public Rectangle getCoords(){
+        return entityCoords;
+    }
 }

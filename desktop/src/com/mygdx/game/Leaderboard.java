@@ -4,6 +4,8 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -15,20 +17,30 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class MenuState extends ScreenAdapter {
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class Leaderboard extends ScreenAdapter {
+    private SpriteBatch batch;
     private Stage stage;
     private Viewport viewport;
     private TextureAtlas atlas;
     protected Skin skin;
     private Table mainTable;
-    private static MenuState instance;
+    private BitmapFont font;
+    private List<Integer> scores;
+    List<Integer> sortedScores;
 
-    public MenuState() {
+    public Leaderboard() {
+        batch = new SpriteBatch();
         atlas = new TextureAtlas("uiskin.atlas");
-        //atlas = new TextureAtlas("skin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
-        //skin = new Skin(Gdx.files.internal("uiskin.json"));
-        //skin.addRegions(atlas);
+        font = new BitmapFont();
+        scores = ScoreManager.loadScores();
+        sortedScores = scores.stream()
+                .sorted(Comparator.reverseOrder())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -41,24 +53,10 @@ public class MenuState extends ScreenAdapter {
 
         stage.addActor(mainTable);
 
-        addButton("Play").addListener(new ClickListener(){
+        addButton("Back").addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new GameplayScreen());
-            }
-        });
-
-        addButton("Leaderboard").addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((Game) Gdx.app.getApplicationListener()).setScreen(new Leaderboard());
-            }
-        });
-
-        addButton("Quit").addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                ((Game) Gdx.app.getApplicationListener()).setScreen(MenuState.getInstance());
             }
         });
 
@@ -72,17 +70,22 @@ public class MenuState extends ScreenAdapter {
         return button;
     }
 
-    public static MenuState getInstance() {
-        if (instance == null) {
-            instance = new MenuState();
-        }
-        return instance;
-    }
-
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0.2f, 0.6f, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.begin();
+        // hasta arriba?
+        font.draw(batch, "Scores:", 10, Gdx.graphics.getHeight() - 10);
+        float y = Gdx.graphics.getHeight() - 30; // y inicial para socores
+
+        for (int i = 0; i < sortedScores.size(); i++) {
+            int score = sortedScores.get(i);
+            font.draw(batch, "Top " + (i + 1) + ": " + score, 10, y);
+            y -= 20;
+        }
+        batch.end();
 
         stage.act();
 

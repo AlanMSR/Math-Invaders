@@ -1,18 +1,25 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameScene {
+    public static final int GAME_RUNNING = 1;
+    public static final int GAME_PAUSED = 0;
+    private int gamestatus;
     private SpriteBatch batch;
     private SideInterface p1Interface, p2Interface;
     private Player player1, player2;
@@ -20,13 +27,20 @@ public class GameScene {
     private BasicEnemy basicEnemy;
     private List<Enemy> enemies;
     public static Texture backgroundTexture;
-    public static Sprite backgroundSprite;
+    public Sprite backgroundSprite;
     private int maxEnemies = 50;
     private int basicDefeated = 1;
     private int advancedDefeated = 1;
+    Controller controller;
+    private Pause pause;
+    private int earthLife = 10;
+    private BitmapFont earthLifeFont;
 
     public GameScene() {
         batch = new SpriteBatch();
+        gamestatus = GAME_RUNNING;
+
+        earthLifeFont = new BitmapFont();
 
         player1 = new Player(1);
         player2 = new Player(2);
@@ -54,6 +68,8 @@ public class GameScene {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         backgroundTexture = new Texture("bg3.png");
         backgroundSprite =new Sprite(backgroundTexture);
+
+        pause = new Pause();
     }
 
     private void nSpawn() {
@@ -74,6 +90,12 @@ public class GameScene {
         boolean p1Kill, p2Kill;
 
         for(Enemy enemy : enemies) {
+
+            if (enemy.getCoords().y <= 1) {
+                this.earthLife -= 5;
+                System.out.println("vider: " + earthLife);
+            }
+
             if (enemy instanceof BasicEnemy) {
                 p1Kill = enemy.checkCollision(player1);
                 p2Kill = enemy.checkCollision(player2);
@@ -99,23 +121,46 @@ public class GameScene {
         p2Interface.updateCurrentNumber(player2.getProjectile().getNumber());
         p2Interface.updateScore(player2.getScore());
         nSpawn();
+
+        if (earthLife <= 0) {
+            List<Integer> ee = new ArrayList<>();
+            ee.add(player1.getScore() + player2.getScore());
+            ScoreManager.saveScores(ee);
+            ((Game) Gdx.app.getApplicationListener()).setScreen(MenuState.getInstance());
+        }
     }
 
     public void draw() {
-        //batch.setProjectionMatrix(viewport.getCamera().combined);
+
         batch.begin();
-        backgroundSprite.draw(batch);
 
-        p1Interface.draw(batch);
-        p2Interface.draw(batch);
-
-        player1.draw(batch);
-        player2.draw(batch);
-
-        for(Enemy enemy : enemies) {
-            enemy.draw(batch);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+            if (gamestatus == GAME_RUNNING) { gamestatus = GAME_PAUSED; }
+            else {gamestatus = GAME_RUNNING;}
         }
 
+
+        if (gamestatus == GAME_RUNNING) {
+
+            backgroundSprite.draw(batch);
+
+            p1Interface.draw(batch);
+            p2Interface.draw(batch);
+
+            player1.draw(batch);
+            player2.draw(batch);
+
+            for (Enemy enemy : enemies){
+                enemy.draw(batch);
+            }
+            earthLifeFont.draw(batch, "Earth Life:" + this.earthLife, Gdx.graphics.getWidth()/2, 35);
+        }
+        else {
+            pause.draw(batch);
+            if (Gdx.input.isKeyJustPressed(Input.Keys.Q)){
+                ((Game) Gdx.app.getApplicationListener()).setScreen(MenuState.getInstance());
+            }
+        }
         batch.end();
     }
 
@@ -232,6 +277,20 @@ public class GameScene {
         }
         public int getY() {
             return y;
+        }
+    }
+
+    private class Pause {
+        public Texture backgroundTexture;
+        public Sprite backgroundSprite;
+
+        public Pause() {
+            backgroundTexture = new Texture("pause.png");
+            backgroundSprite = new Sprite(backgroundTexture);
+        }
+        public void draw(SpriteBatch batch) {
+            ScreenUtils.clear(0.2f, 0.3f, 0.5f, 0.2f);
+            backgroundSprite.draw(batch);
         }
     }
 }
