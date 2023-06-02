@@ -65,7 +65,7 @@ public class GameScene {
         // Initialize gamepad input for Player 2
         Controllers.addListener(new PlayerControllerListener(2));
 
-        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         enemies = new ArrayList<Enemy>();
         advancedEnemy = new AdvancedEnemy();
         basicEnemy = new BasicEnemy();
@@ -119,7 +119,7 @@ public class GameScene {
                 p2Kill = enemy.checkCollision(player2);
 
                 if(enemy.healthPoints <= 0){
-                    System.out.println("Boss derrotado!!!");
+
                     bossDefeated = true;
                 }
             }

@@ -8,9 +8,7 @@ public abstract class Enemy extends Entity{
         super(healthPoints, sprite, sound);
     }
 
-    public void spawnPoint(){
 
-    }
 
     abstract boolean checkCollision(Player player);
 }

@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class FinalBoss extends AdvancedEnemy{
@@ -11,8 +12,8 @@ public class FinalBoss extends AdvancedEnemy{
         super(10,"boss.png" ,null);
         setCoords(122, Gdx.graphics.getHeight() + 80);
         introComplete = false;
-        targetY = 360; // Altura objetivo para el movimiento introductorio
-        introSpeed = 50; // Velocidad de movimiento introductoria
+        targetY = 360;
+        introSpeed = 50;
         entityCoords.width = Gdx.graphics.getWidth() - 240; // 240 por las dos interfaces(120 c/u)
         entityCoords.height = 250;
     }
@@ -33,32 +34,35 @@ public class FinalBoss extends AdvancedEnemy{
         }
     }
 
-    public boolean checkCollision(Player player){
-        PlayerProjectile bala = player.getProjectile();
-        if (bala.getProjectile().overlaps(this.entityCoords)) {
-            System.out.println("ITS SIMPLY PUGGERING");
-            bala.setVisible(false);
-            bala.setFired(false);
-            bala.setCoords(0, Gdx.graphics.getHeight() + 10);
-            player.setScore(15);
-            healthPoints -= bala.getNumber();
-            if(healthPoints <= 0) {
 
-                return true;
+    public boolean checkCollision(Player player) {
+        PlayerProjectile bala = player.getProjectile();
+        if(shieldActive) {
+            breakShield(player);
+        }
+        if (!shieldActive) {
+            if (bala.getProjectile().overlaps(this.entityCoords)) {
+                bala.setVisible(false);
+                bala.setFired(false);
+                bala.setCoords(0, Gdx.graphics.getHeight() + 10);
+                player.setScore(15);
+                healthPoints -= bala.getNumber();
+                if (healthPoints <= 0) {
+                    return true;
+                }
             }
         }
         return false;
-
     }
 
-    public boolean getAlive(){
-        if(!isAlive){
+    @Override
+    public void reposition() {}
 
-        }
-    return false;
-    }
     public void draw(SpriteBatch batch){
+        if (shieldActive)
+            batch.setColor(Color.RED);
         batch.draw(sprite, entityCoords.x, entityCoords.y, entityCoords.width, entityCoords.height);
+        batch.setColor(Color.WHITE);
         introMovement();
     }
 }

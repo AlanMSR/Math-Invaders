@@ -10,7 +10,7 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
-		config.setTitle("pugagamer");
+		config.setTitle("Math Invaders");
 		config.setWindowedMode(1200, 480);
 		config.setWindowSizeLimits(800, 480, 900, 480);
 		Gdx.files = new Lwjgl3Files();

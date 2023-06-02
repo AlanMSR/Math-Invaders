@@ -13,11 +13,11 @@ public class BasicEnemy extends Enemy{
         super(1, "huever.png", null);
         Random r = new Random();
         int minRange = 120;
-        int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
+        int maxRange = Gdx.graphics.getWidth() - 165;
         setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + 10);
         entityCoords.width = 40;
         entityCoords.height = 42;
-        speed = 50; // Velocidad de movimiento del enemigo (ajústala según tus necesidades)
+        speed = 50;
     }
     public BasicEnemy(int healthPoints, String sprite, Sound sound) {
         super(healthPoints, sprite, sound);
@@ -25,11 +25,7 @@ public class BasicEnemy extends Enemy{
 
     public void movement() {
         float delta = Gdx.graphics.getDeltaTime();
-
-        // Calcula el desplazamiento en función de la velocidad y el tiempo transcurrido
         float displacementY = -speed * delta;
-
-        // Actualiza la posición del enemigo
         entityCoords.y += displacementY;
 
         if(entityCoords.y <= 0){
@@ -40,7 +36,7 @@ public class BasicEnemy extends Enemy{
     private void reposition(){
         Random r = new Random();
         int minRange = 120;
-        int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
+        int maxRange = Gdx.graphics.getWidth() - 165;
         int heightCooldown = r.nextInt(80);
         setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
     }
@@ -48,7 +44,6 @@ public class BasicEnemy extends Enemy{
     public boolean checkCollision(Player player) {
         PlayerProjectile bala = player.getProjectile();
         if (bala.getProjectile().overlaps(this.entityCoords)) {
-            System.out.println("ITS SIMPLY PUGGERING");
             bala.setVisible(false);
             bala.setFired(false);
             bala.setCoords(0, Gdx.graphics.getHeight() + 10);

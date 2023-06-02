@@ -4,13 +4,13 @@ import com.badlogic.gdx.Gdx;
 import java.util.Random;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Rectangle;
 
-public class AdvancedEnemy extends BasicEnemy{
+public class AdvancedEnemy extends BasicEnemy {
     private float centerX;
     private float centerY;
     private float radius;
@@ -24,6 +24,8 @@ public class AdvancedEnemy extends BasicEnemy{
     private int p2Damage;
     private TextureRegion[] enemiesSprites;
     private Texture prueba;
+    protected boolean shieldActive = true;
+    protected int shieldHealth = 10;
 
     public AdvancedEnemy() {
         super(2,"enemy_ships.png",null);
@@ -31,7 +33,7 @@ public class AdvancedEnemy extends BasicEnemy{
         setCoords(400,900);
         entityCoords.width = 32;
         entityCoords.height = 45;
-        // Variables de prueba/ may change latta idfk
+
         this.angle = 0;
         this.radius = 70;
         this.centerX = 300;
@@ -47,6 +49,12 @@ public class AdvancedEnemy extends BasicEnemy{
         super(healthPoints, sprite, sound);
     }
 
+    public void updateAnswer() {
+        Random random = new Random();
+        healthPoints = random.nextInt(2,17);
+        answer = healthPoints;
+    }
+
     public boolean checkAnswer(Player player) {
         PlayerProjectile bala = player.getProjectile();
         if (bala.getId() == 1) {
@@ -59,23 +67,23 @@ public class AdvancedEnemy extends BasicEnemy{
         }
 
         if (p1BShot && p2BShot) {
+
             int totalDamage = p1Damage + p2Damage;
-            if(totalDamage == answer) {
+
+            if (totalDamage == answer) {
                 healthPoints -= totalDamage;
                 System.out.println("Enemy killed");
-                Random random = new Random();
-
-                healthPoints = random.nextInt(2,17);
-                answer = healthPoints;
+                updateAnswer();
                 p1BShot = false;
                 p2BShot = false;
                 p1Damage = 0;
                 p2Damage = 0;
                 player.setScore(3);
                 reposition();
+                shieldActive = true;
+                shieldHealth = 10;
                 return false;
-            }
-            else {
+            } else {
                 invincibility = true;
             }
         }
@@ -122,7 +130,7 @@ public class AdvancedEnemy extends BasicEnemy{
         }
     }
 
-    private void reposition() {
+    public void reposition() {
         Random r = new Random();
         int minRange = 130;
         int maxRange = Gdx.graphics.getWidth() - 175; // 120 + 42
@@ -135,22 +143,47 @@ public class AdvancedEnemy extends BasicEnemy{
 
     public boolean checkCollision(Player player) {
         PlayerProjectile bala = player.getProjectile();
-        if (!invincibility) {
-            if (bala.getProjectile().overlaps(this.entityCoords)) {
-                System.out.println("ITS PUGGERING");
-                bala.setVisible(false);
-                bala.setFired(false);
-                bala.setCoords(0, Gdx.graphics.getHeight() + 10);
+        if(shieldActive) {
+            breakShield(player);
+        }
 
-                return checkAnswer(player);
-                //return true;
+        if (!shieldActive) {
+            if (!invincibility) {
+                if (bala.getProjectile().overlaps(this.entityCoords)) {
+                    bala.setVisible(false);
+                    bala.setFired(false);
+                    bala.setCoords(0, Gdx.graphics.getHeight() + 10);
+
+                    return checkAnswer(player);
+                    //return true;
+                }
             }
         }
         return false;
     }
 
+    public void breakShield(Player player) {
+        PlayerProjectile bala = player.getProjectile();
+        if (bala.getProjectile().overlaps(this.entityCoords)) {
+            bala.setVisible(false);
+            bala.setFired(false);
+            bala.setCoords(0, Gdx.graphics.getHeight() + 10);
+            shieldHealth -= 1;
+            if (shieldHealth <= 0) {
+                deactivateShield();
+            }
+        }
+    }
+
+    public void deactivateShield(){
+        shieldActive = false;
+    }
+
     public void draw(SpriteBatch batch) {
+        if (shieldActive)
+            batch.setColor(Color.BLUE);
         batch.draw(enemiesSprites[answer - 2], entityCoords.x, entityCoords.y, entityCoords.width, entityCoords.height);
+        batch.setColor(Color.WHITE);
         //batch.draw(prueba, entityCoords.x, entityCoords.y, entityCoords.width, entityCoords.height);
         movement();
         //checkCollision();
