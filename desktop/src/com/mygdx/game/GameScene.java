@@ -40,6 +40,7 @@ public class GameScene {
     private boolean bossSpawned = false;
     private boolean bossDefeated = false;
     private FinalBoss boss;
+    private int totalBasicDefeated = 0;
 
 
     public GameScene() {
@@ -102,9 +103,10 @@ public class GameScene {
             advancedDefeated = 1;
         }
 
-        if (basicDefeated > 20 && bossSpawned == false) {
+        if (totalBasicDefeated > 20 && bossSpawned == false) {
             enemies.add(boss);
             bossSpawned = true;
+            totalBasicDefeated = 0;
         }
     }
 
@@ -132,6 +134,7 @@ public class GameScene {
 
                 if(p1Kill || p2Kill){
                     basicDefeated++;
+                    totalBasicDefeated++;
                     System.out.println("basicdead: " + basicDefeated);
                 }
             }
@@ -234,9 +237,9 @@ public class GameScene {
             playerCoords.setLocation(container.width - 90, container.height - 40);
 
             numbersTexture = new Texture(Gdx.files.internal("numbers&shi.png"));
-            currentBullet = new Rectangle(container.width - 60 - 25, container.height - 90 - 540, 35, 35);
-            previousBullet = new Rectangle(container.width - 60 - 60, container.height - 90 - 630, 25, 25);
-            nextBullet = new Rectangle(container.width - 60 + 25, container.height - 90 - 450, 25, 25);
+            currentBullet = new Rectangle(container.width - 60 - 25, container.height - 170 - ((screenHeight * 2) / 3), 35, 35);
+            previousBullet = new Rectangle(container.width - 60 - 60, container.height - 90 - (screenHeight) + 180, 25, 25);
+            nextBullet = new Rectangle(container.width - 60 + 25, container.height - 50 - ((screenHeight * 2) / 3), 25, 25);
 
             bulletOfSets = new TextureRegion[9];
             bulletOfSets[0] = new TextureRegion(numbersTexture, 178, 258, 12, 30);
@@ -256,9 +259,9 @@ public class GameScene {
             this.currentBullet.x = container.x + 60 - 10;
             //this.currentBullet.y = container.y + 80; //brute force baby
             this.previousBullet.x = container.x + 10 ;
-            this.previousBullet.y = container.y + 110;
+            this.previousBullet.y = container.y + 170;
             this.nextBullet.x = container.x + 60 + 35;
-            this.nextBullet.y = container.y + 280;
+            this.nextBullet.y = container.y + screenHeight / 3 + 50;
             this.fontCoords.setLocation(container.x + 60 - 25, fontCoords.getY());
             this.playerCoords.setLocation(container.x + 60 - 30, playerCoords.getY());
         }
