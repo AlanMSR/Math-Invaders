@@ -18,9 +18,12 @@ public class FinalBoss extends AdvancedEnemy{
         entityCoords.height = 250;
     }
 
+
     public void introMovement() {
         if (!introComplete) {
             float currentY = entityCoords.y;
+            float targetY = ((3f / 4f)) * Gdx.graphics.getHeight(); // 3/4 de la altura de la pantalla
+
             if (currentY > targetY) {
                 float newY = currentY - introSpeed * Gdx.graphics.getDeltaTime();
                 if (newY <= targetY) {
@@ -33,6 +36,7 @@ public class FinalBoss extends AdvancedEnemy{
             }
         }
     }
+
 
 
     public boolean checkCollision(Player player) {

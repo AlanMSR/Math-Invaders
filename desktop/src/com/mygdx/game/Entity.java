@@ -12,7 +12,6 @@ public abstract class Entity {
     protected Rectangle entityCoords;
     private Sound sound;
     private SpriteBatch batch;
-    protected boolean isAlive = true;
 
     public Entity(){
 
@@ -26,15 +25,6 @@ public abstract class Entity {
         loadTexture(sprite);
     }
 
-    public void loseHealthPoints(int damage){
-        this.healthPoints -= damage;
-    }
-
-    public void isStillAlive() {
-        if (healthPoints <= 0) {
-            isAlive = false;
-        }
-    }
 
     public void loadTexture(String path) {
         try

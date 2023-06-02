@@ -15,8 +15,8 @@ public class BasicEnemy extends Enemy{
         int minRange = 120;
         int maxRange = Gdx.graphics.getWidth() - 165;
         setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + 10);
-        entityCoords.width = 40;
-        entityCoords.height = 42;
+        entityCoords.width = 63;
+        entityCoords.height = 65;
         speed = 50;
     }
     public BasicEnemy(int healthPoints, String sprite, Sound sound) {

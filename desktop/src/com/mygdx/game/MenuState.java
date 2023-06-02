@@ -4,6 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,19 +19,30 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class MenuState extends ScreenAdapter {
+    private int screenWidth, screenHeight;
+    private SpriteBatch batch;
     private Stage stage;
     private Viewport viewport;
     private TextureAtlas atlas;
     protected Skin skin;
     private Table mainTable;
     private static MenuState instance;
+    private Texture backgroundTexture;
+    private Sprite backgroundSprite;
 
     public MenuState() {
+        batch = new SpriteBatch();
+
+        screenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+
         atlas = new TextureAtlas("uiskin.atlas");
         //atlas = new TextureAtlas("skin.atlas");
         skin = new Skin(Gdx.files.internal("uiskin.json"), atlas);
         //skin = new Skin(Gdx.files.internal("uiskin.json"));
         //skin.addRegions(atlas);
+        backgroundTexture = new Texture("menubg.png");
+        backgroundSprite = new Sprite(backgroundTexture);
     }
 
     @Override
@@ -68,7 +82,7 @@ public class MenuState extends ScreenAdapter {
     private TextButton addButton(String name) {
         TextButton button = new TextButton(name, skin);
         mainTable.add(button).width(400).height(80).padBottom(20);
-        mainTable.row();
+        //mainTable.row();
         return button;
     }
 
@@ -83,6 +97,9 @@ public class MenuState extends ScreenAdapter {
     public void render(float delta) {
         ScreenUtils.clear(0.2f, 0.6f, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.begin();
+        batch.draw(backgroundSprite, 0, 0, screenWidth, screenHeight);
+        batch.end();
 
         stage.act();
 

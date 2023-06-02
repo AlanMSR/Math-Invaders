@@ -31,8 +31,8 @@ public class AdvancedEnemy extends BasicEnemy {
         super(2,"enemy_ships.png",null);
         this.speed = 30;
         setCoords(400,900);
-        entityCoords.width = 32;
-        entityCoords.height = 45;
+        entityCoords.width = 55;
+        entityCoords.height = 70;
 
         this.angle = 0;
         this.radius = 70;

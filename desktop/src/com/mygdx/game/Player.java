@@ -18,8 +18,9 @@ public class Player extends Entity {
     Controller controller;
     private boolean leftShoulderPressed = false;
     private boolean rightShoulderPressed = false;
-    //private boolean hasShot = false;
+
     private int score = 0;
+    private int interfaceSize = 150;
 
     public Player(int playerNumber) {
 
@@ -32,8 +33,8 @@ public class Player extends Entity {
 
         shipRectangle = new Rectangle();
         shipRectangle.x = 800 / 2 - 64 / 2;
-        shipRectangle.width = 45;
-        shipRectangle.height = 45;
+        //shipRectangle.width = 45;
+        //shipRectangle.height = 45;
         if (playerNumber == 1) {
             projectile = new PlayerProjectile(1);
             shipRectangle.y = 20;
@@ -41,8 +42,8 @@ public class Player extends Entity {
             projectile = new PlayerProjectile(2);
             shipRectangle.y = 100;
         }
-        shipRectangle.width = 64;
-        shipRectangle.height = 64;
+        shipRectangle.width = 84;
+        shipRectangle.height = 84;
 
         shootSound = Gdx.audio.newSound(Gdx.files.internal("shoot.wav"));
     }
@@ -132,10 +133,10 @@ public class Player extends Entity {
         // Use controller values for movement if available
         if (xAxisValue != 0) {
             shipRectangle.x += xAxisValue * speed;
-            if (shipRectangle.x < 120) {
-                shipRectangle.x = 120;
-            } else if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - 120) {
-                shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - 120;
+            if (shipRectangle.x < interfaceSize) {
+                shipRectangle.x = interfaceSize;
+            } else if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - interfaceSize) {
+                shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - interfaceSize;
             }
         }
         if (yAxisValue != 0) {
@@ -159,8 +160,8 @@ public class Player extends Entity {
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                     shipRectangle.x += speed;
-                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - 120) {
-                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - 120;
+                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - interfaceSize) {
+                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - interfaceSize;
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
@@ -179,19 +180,19 @@ public class Player extends Entity {
                 // Player 2 keyboard input logic
                 if (Gdx.input.isKeyPressed(Input.Keys.A)) {
                     shipRectangle.x -= speed;
-                    if (shipRectangle.x < 120) {
-                        shipRectangle.x = 120;
+                    if (shipRectangle.x < interfaceSize) {
+                        shipRectangle.x = interfaceSize;
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.D)) {
                     shipRectangle.x += speed;
-                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - 120) {
-                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - 120;
+                    if (shipRectangle.x > Gdx.graphics.getWidth() - shipRectangle.width - interfaceSize) {
+                        shipRectangle.x = Gdx.graphics.getWidth() - shipRectangle.width - interfaceSize;
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                     shipRectangle.y += speed;
-                    if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height - 120) {
+                    if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height - interfaceSize) {
                         shipRectangle.y = Gdx.graphics.getHeight() - shipRectangle.height;
                     }
                 }

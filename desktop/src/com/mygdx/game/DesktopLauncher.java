@@ -11,8 +11,16 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("Math Invaders");
-		config.setWindowedMode(1200, 480);
-		config.setWindowSizeLimits(800, 480, 900, 480);
+
+		int screenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+		int screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+
+		// Set window size to match screen dimensions
+		int width = screenWidth;
+		int height = screenHeight;
+		//config
+		//config.setWindowedMode(width, height);
+		config.setWindowSizeLimits(width, height, width, height);
 		Gdx.files = new Lwjgl3Files();
 		new Lwjgl3Application(new Runner(), config);
 	}

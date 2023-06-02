@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameScene {
+    private int screenWidth, screenHeight;
     public static final int GAME_RUNNING = 1;
     public static final int GAME_PAUSED = 0;
     private int gamestatus;
@@ -42,6 +43,9 @@ public class GameScene {
 
 
     public GameScene() {
+        screenWidth = java.awt.Toolkit.getDefaultToolkit().getScreenSize().width;
+        screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
+
         batch = new SpriteBatch();
         gamestatus = GAME_RUNNING;
 
@@ -98,7 +102,7 @@ public class GameScene {
             advancedDefeated = 1;
         }
 
-        if (basicDefeated > 2 && bossSpawned == false) {
+        if (basicDefeated > 20 && bossSpawned == false) {
             enemies.add(boss);
             bossSpawned = true;
         }
@@ -111,7 +115,6 @@ public class GameScene {
 
             if (enemy.getCoords().y <= 1) {
                 this.earthLife -= 5;
-                System.out.println("vider: " + earthLife);
             }
 
             if(enemy instanceof FinalBoss){
@@ -119,7 +122,7 @@ public class GameScene {
                 p2Kill = enemy.checkCollision(player2);
 
                 if(enemy.healthPoints <= 0){
-
+                    System.out.println("Boss derrotado!!!");
                     bossDefeated = true;
                 }
             }
@@ -168,7 +171,8 @@ public class GameScene {
 
         if (gamestatus == GAME_RUNNING) {
 
-            backgroundSprite.draw(batch);
+            //backgroundSprite.draw(batch);
+            batch.draw(backgroundSprite, 0, 0, screenWidth, screenHeight);
 
             p1Interface.draw(batch);
             p2Interface.draw(batch);
@@ -216,24 +220,23 @@ public class GameScene {
                 backgroundRegion = new TextureRegion(backgrond);
             }
 
-            container = new Rectangle(0, 0,120, Gdx.graphics.getHeight());
+            container = new Rectangle(0, 0,150, Gdx.graphics.getHeight());
 
-            imageContainer = new Rectangle(container.width - 60 - 20, container.height - 90 - 70, 60, 90);
+            imageContainer = new Rectangle(container.width - 60 - 30, container.height - 90 - 120, 70, 100);
             System.out.println(imageRegion.getRegionHeight());
 
             font = new BitmapFont();
             fontCoords = new SimplePoint();
-            fontCoords.setLocation(container.width - 60 - 23, container.height - 90 - 105);
+            fontCoords.setLocation(container.width - 60 - 35, container.height - 90 - 220);
 
             player = new BitmapFont();
             playerCoords = new SimplePoint();
             playerCoords.setLocation(container.width - 90, container.height - 40);
 
-            currentBullet = new Rectangle(container.width - 60 - 10, container.height - 90 - 320, 30, 30);
             numbersTexture = new Texture(Gdx.files.internal("numbers&shi.png"));
-
-            previousBullet = new Rectangle(container.width - 60 - 40, container.height - 90 - 360, 20, 20);
-            nextBullet = new Rectangle(container.width - 60 + 30, container.height - 90 - 250, 20, 20);
+            currentBullet = new Rectangle(container.width - 60 - 25, container.height - 90 - 540, 35, 35);
+            previousBullet = new Rectangle(container.width - 60 - 60, container.height - 90 - 630, 25, 25);
+            nextBullet = new Rectangle(container.width - 60 + 25, container.height - 90 - 450, 25, 25);
 
             bulletOfSets = new TextureRegion[9];
             bulletOfSets[0] = new TextureRegion(numbersTexture, 178, 258, 12, 30);
@@ -248,15 +251,15 @@ public class GameScene {
         }
 
         public void setToRight() {
-            container.x = Gdx.graphics.getWidth() - 120;
+            container.x = Gdx.graphics.getWidth() - 150;
             this.imageContainer.x = container.x + 60 - 40;
-            this.currentBullet.x = container.x + 60 - 23;
-            this.currentBullet.y = container.y + 80; //brute force baby
-            this.previousBullet.x = container.x + 60 - 55;
-            this.previousBullet.y = container.y + 70;
-            this.nextBullet.x = container.x + 60 + 20;
-            this.nextBullet.y = container.y + 180;
-            this.fontCoords.setLocation(container.x + 60 - 30, fontCoords.getY());
+            this.currentBullet.x = container.x + 60 - 10;
+            //this.currentBullet.y = container.y + 80; //brute force baby
+            this.previousBullet.x = container.x + 10 ;
+            this.previousBullet.y = container.y + 110;
+            this.nextBullet.x = container.x + 60 + 35;
+            this.nextBullet.y = container.y + 280;
+            this.fontCoords.setLocation(container.x + 60 - 25, fontCoords.getY());
             this.playerCoords.setLocation(container.x + 60 - 30, playerCoords.getY());
         }
 
