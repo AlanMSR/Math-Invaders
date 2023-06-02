@@ -16,11 +16,11 @@ public class DesktopLauncher {
 		int screenHeight = java.awt.Toolkit.getDefaultToolkit().getScreenSize().height;
 
 		// Set window size to match screen dimensions
-		int width = screenWidth;
-		int height = screenHeight;
+		//int width = screenWidth;
+		//int height = screenHeight;
 		//config
 		//config.setWindowedMode(width, height);
-		config.setWindowSizeLimits(width, height, width, height);
+		config.setWindowSizeLimits(screenWidth, screenHeight, screenWidth, screenHeight);
 		Gdx.files = new Lwjgl3Files();
 		new Lwjgl3Application(new Runner(), config);
 	}
