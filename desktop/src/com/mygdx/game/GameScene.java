@@ -35,7 +35,7 @@ public class GameScene {
     private int advancedDefeated = 1;
     Controller controller;
     private Pause pause;
-    private int earthLife = 10;
+    private int earthLife = 50;
     private BitmapFont earthLifeFont;
     private boolean bossSpawned = false;
     private boolean bossDefeated = false;

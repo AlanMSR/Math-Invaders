@@ -55,6 +55,13 @@ public class AdvancedEnemy extends BasicEnemy {
         answer = healthPoints;
     }
 
+    void resetPlayerShots() {
+        p1BShot = false;
+        p2BShot = false;
+        p1Damage = 0;
+        p2Damage = 0;
+    }
+
     public boolean checkAnswer(Player player) {
         PlayerProjectile bala = player.getProjectile();
         if (bala.getId() == 1) {
@@ -74,10 +81,7 @@ public class AdvancedEnemy extends BasicEnemy {
                 healthPoints -= totalDamage;
                 System.out.println("Enemy killed");
                 updateAnswer();
-                p1BShot = false;
-                p2BShot = false;
-                p1Damage = 0;
-                p2Damage = 0;
+                resetPlayerShots();
                 player.setScore(3);
                 reposition();
                 shieldActive = true;
@@ -125,6 +129,9 @@ public class AdvancedEnemy extends BasicEnemy {
             reposition();
             healthPoints = random.nextInt(2,17);
             answer = healthPoints;
+            resetPlayerShots();
+            this.shieldActive = true;
+            this.shieldHealth = 10;
             this.invincibility = false;
             //changeText
         }
@@ -132,8 +139,8 @@ public class AdvancedEnemy extends BasicEnemy {
 
     public void reposition() {
         Random r = new Random();
-        int minRange = 130;
-        int maxRange = Gdx.graphics.getWidth() - 175; // 120 + 42
+        int minRange = 150;
+        int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
         int heightCooldown = r.nextInt(80);
         centerX = r.nextInt(minRange, maxRange);
         centerY = Gdx.graphics.getHeight() + heightCooldown;
@@ -148,7 +155,7 @@ public class AdvancedEnemy extends BasicEnemy {
         }
 
         if (!shieldActive) {
-            if (!invincibility) {
+            if (invincibility == false) {
                 if (bala.getProjectile().overlaps(this.entityCoords)) {
                     bala.setVisible(false);
                     bala.setFired(false);

@@ -20,7 +20,7 @@ public class Player extends Entity {
     private boolean rightShoulderPressed = false;
 
     private int score = 0;
-    private int interfaceSize = 150;
+    private int interfaceSize = 170;
 
     public Player(int playerNumber) {
 
@@ -192,7 +192,7 @@ public class Player extends Entity {
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                     shipRectangle.y += speed;
-                    if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height - interfaceSize) {
+                    if (shipRectangle.y > Gdx.graphics.getHeight() - shipRectangle.height) {
                         shipRectangle.y = Gdx.graphics.getHeight() - shipRectangle.height;
                     }
                 }
