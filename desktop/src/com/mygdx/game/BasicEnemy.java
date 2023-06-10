@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.Random;
 
 public class BasicEnemy extends Enemy{
@@ -11,10 +11,11 @@ public class BasicEnemy extends Enemy{
 
     public BasicEnemy(){
         super(1, "huever.png", null);
-        Random r = new Random();
+        //Random r = new Random();
         int minRange = 120;
         int maxRange = Gdx.graphics.getWidth() - 165;
-        setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + 10);
+        int randomNum = ThreadLocalRandom.current().nextInt(minRange, maxRange);
+        setCoords(randomNum,Gdx.graphics.getHeight() + 10);
         entityCoords.width = 63;
         entityCoords.height = 65;
         speed = 50;
@@ -34,11 +35,12 @@ public class BasicEnemy extends Enemy{
     }
 
     private void reposition(){
-        Random r = new Random();
+        //Random r = new Random();
         int minRange = 120;
         int maxRange = Gdx.graphics.getWidth() - 165;
-        int heightCooldown = r.nextInt(80);
-        setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
+        int randomNum = ThreadLocalRandom.current().nextInt(minRange, maxRange);
+        int heightCooldown = ThreadLocalRandom.current().nextInt(80);
+        setCoords(randomNum,Gdx.graphics.getHeight() + heightCooldown);
     }
 
     public boolean checkCollision(Player player) {

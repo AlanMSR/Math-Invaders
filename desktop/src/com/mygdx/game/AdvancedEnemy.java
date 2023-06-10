@@ -2,6 +2,7 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -50,8 +51,9 @@ public class AdvancedEnemy extends BasicEnemy {
     }
 
     public void updateAnswer() {
-        Random random = new Random();
-        healthPoints = random.nextInt(2,17);
+
+        int random = ThreadLocalRandom.current().nextInt(2, 17);
+        healthPoints = random;
         answer = healthPoints;
     }
 
@@ -127,7 +129,7 @@ public class AdvancedEnemy extends BasicEnemy {
 
         if(entityCoords.y <= 0){
             reposition();
-            healthPoints = random.nextInt(2,17);
+            healthPoints = ThreadLocalRandom.current().nextInt(2, 17);
             answer = healthPoints;
             resetPlayerShots();
             this.shieldActive = true;
@@ -138,13 +140,16 @@ public class AdvancedEnemy extends BasicEnemy {
     }
 
     public void reposition() {
-        Random r = new Random();
+
+
+        //Random r = new Random();
         int minRange = 150;
         int maxRange = Gdx.graphics.getWidth() - 165; // 120 + 42
-        int heightCooldown = r.nextInt(80);
-        centerX = r.nextInt(minRange, maxRange);
+        int random = ThreadLocalRandom.current().nextInt(minRange, maxRange);
+        int heightCooldown = ThreadLocalRandom.current().nextInt(80);
+        centerX = random;
         centerY = Gdx.graphics.getHeight() + heightCooldown;
-        setCoords(r.nextInt(minRange, maxRange),Gdx.graphics.getHeight() + heightCooldown);
+        setCoords(random,Gdx.graphics.getHeight() + heightCooldown);
         //System.out.println("donde estas? " + entityCoords);
     }
 
